@@ -8,4 +8,8 @@ const authController_1 = __importDefault(require("../controller/authController")
 const valid_1 = require("../middleware/valid");
 const router = express_1.default.Router();
 router.post('/register', valid_1.validRegister, authController_1.default.register);
+router.post('/active', authController_1.default.activeAccount);
+router.post('/login', authController_1.default.login);
+router.get('/logout', authController_1.default.logout);
+router.get('/refresh_token', authController_1.default.refreshToken);
 exports.default = router;

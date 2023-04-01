@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Please add your password"],
-        trim: true
+        trim: true,
     },
     avatar: {
         type: String,
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        default: 'normal' // fast
+        default: 'register' // fast
     },
     rf_token: { type: String, select: false }
 },{
