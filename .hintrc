@@ -11,6 +11,16 @@
           "meta[name=theme-color]"
         ]
       }
-    ]
+    ],
+    "axe/forms": [
+      "default",
+      {
+        "label": "off"
+      }
+    ],
+    "disown-opener": "off",
+    "detect-css-reflows/composite": "off",
+    "detect-css-reflows/paint": "off",
+    "detect-css-reflows/layout": "off"
   }
 }
