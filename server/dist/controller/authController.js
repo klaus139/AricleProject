@@ -71,7 +71,7 @@ const authCtrl = {
             const { account, password } = req.body;
             const user = yield userModel_1.default.findOne({ account });
             if (!user)
-                return res.status(400).json({ msg: 'This account does not exits.' });
+                return res.status(400).json({ msg: 'This account does not exist.' });
             // if user exists
             loginUser(user, password, res);
         }
@@ -101,7 +101,7 @@ const authCtrl = {
                 return res.status(400).json({ msg: 'This account does not exist' });
             const access_token = (0, generateToken_1.generateAccessToken)({ id: user._id });
             //   console.log(user)
-            res.json({ access_token });
+            res.json({ access_token, user });
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });

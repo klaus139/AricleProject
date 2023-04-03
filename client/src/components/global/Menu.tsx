@@ -1,31 +1,64 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { RootStore } from "../../utils/Type";
+import { logout } from "../../redux/actions/authAction";
 
 const Menu = () => {
+  const { auth } = useSelector((state: RootStore) => state);
+  const dispatch = useDispatch();
+
+  const { pathname } = useLocation();
+
   const bfLoginLinks = [
-    { label: 'Login', path: '/login' },
-    { label: 'Register', path: '/register' }
+    { label: "Login", path: "/login" },
+    { label: "Register", path: "/register" },
   ];
-   // replace 'JohnDoe' with the actual username
-  
+
+  const afLoginLinks = [
+    { label: "About", path: "/aboutus" },
+    { label: "Contact", path: "/contact" },
+  ];
+
+  const navLinks = auth.access_token ? afLoginLinks : bfLoginLinks;
+
+  const isActive = (pn: string) => {
+    if (pn === pathname) return "active";
+  };
+
+  const handleLogout = () => {
+    if (!auth.access_token) return;
+    dispatch(logout(auth.access_token) as unknown as any);
+  };
+
   return (
-    <>
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item d-lg-none">
-          <Link className="nav-link" to={bfLoginLinks[0].path}>{bfLoginLinks[0].label}</Link>
+    <ul className="navbar-nav ms-auto">
+      {navLinks.map((link, index) => (
+        <li key={index} className={`nav-item ${isActive(link.path)}`}>
+          <Link className="nav-link" to={link.path}>
+            {link.label}
+          </Link>
         </li>
-        <li className="nav-item d-lg-none">
-          <Link className="nav-link" to={bfLoginLinks[1].path}>{bfLoginLinks[1].label}</Link>
+      ))}
+
+      {auth.user?.role === "admin" && (
+        <li className={`nav-item ${isActive("/category")}`}>
+          <Link to="/category" className="nav-link">
+            Category
+          </Link>
         </li>
-      </ul>
-      <ul className="navbar-nav">
-        <li className="nav-item d-none d-lg-block">
-          <Link className="nav-link" to={bfLoginLinks[0].path}>{bfLoginLinks[0].label}</Link>
+      )}
+
+      {auth.user?.role === "admin" && (
+        <li className={`nav-item ${isActive("/create_blog")}`}>
+          <Link to="/create_blog" className="nav-link">
+            CreateBlog
+          </Link>
         </li>
-        <li className="nav-item d-none d-lg-block">
-          <Link className="nav-link" to={bfLoginLinks[1].path}>{bfLoginLinks[1].label}</Link>
-        </li>
-        <li className="nav-item dropdown d-block d-lg-none">
+      )}
+
+      {auth.user && (
+        <li className="nav-item dropdown">
           <span
             className="nav-link dropdown-toggle"
             id="navbarDropdown"
@@ -33,32 +66,35 @@ const Menu = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            username
+            <img
+              src={auth.user.avatar}
+              alt="avatar"
+              className="avatar"
+              // style={{ width: "30px", height: "30px" }}
+            />
           </span>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+
+          <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li>
-              <Link className="dropdown-item" to="/profile">
+              <Link className="dropdown-item" to={`/profile/${auth.user._id}`}>
                 Profile
               </Link>
             </li>
-            <li>
-              <Link className="dropdown-item" to="/about">
-                About us
-              </Link>
-            </li>
+
             <li>
               <hr className="dropdown-divider" />
             </li>
+
             <li>
-              <Link className="dropdown-item" to="/">
+              <Link className="dropdown-item" to="/" onClick={handleLogout}>
                 Logout
               </Link>
             </li>
           </ul>
         </li>
-      </ul>
-    </>
-  )
-}
+      )}
+    </ul>
+  );
+};
 
 export default Menu;

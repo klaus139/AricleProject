@@ -75,7 +75,7 @@ const authCtrl = {
           const { account, password } = req.body
     
           const user = await User.findOne({account})
-          if(!user) return res.status(400).json({msg: 'This account does not exits.'})
+          if(!user) return res.status(400).json({msg: 'This account does not exist.'})
     
           // if user exists
           loginUser(user, password, res)
@@ -104,7 +104,7 @@ const authCtrl = {
 
           const access_token = generateAccessToken({id: user._id})
         //   console.log(user)
-          res.json({access_token})
+          res.json({access_token, user})
           
         } catch (err: any) {
           return res.status(500).json({msg: err.message})

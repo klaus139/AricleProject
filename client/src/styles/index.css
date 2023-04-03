@@ -12,5 +12,22 @@ code {
     monospace;
 }
 
+.avatar{
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  transform: translateY(-3px);
+  border-radius: 50%;
+}
+
 /* ------Authpage -------------- */
-@import url('./auth.css')
+@import url('./auth.css');
+
+
+/* ------Loadingpage -------------- */
+@import url('./loading.css');
+
+/* ------Alertpage -------------- */
+@import url('./alert.css');
+
+
