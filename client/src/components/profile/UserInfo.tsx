@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootStore, InputChange, IUserInfo, FormSubmit  } from '../../utils/Type';
 
 import NotFound from '../global/NotFound'
-import { updateUser } from '../../redux/actions/profileAction';
+import { resetPassword, updateUser } from '../../redux/actions/profileAction';
 
 const UserInfo = () => {
     const initState = {
@@ -38,9 +38,12 @@ const UserInfo = () => {
         if(avatar || name)
         dispatch(updateUser((avatar as File), name, auth) as unknown as any)
 
+        if(password && auth.access_token)
+        dispatch(resetPassword(password, cf_password, auth.access_token) as unknown as any)
+
     }
 
-    const {name, account, avatar, password, cf_password} = user as unknown as any
+    const {name, avatar, password, cf_password} = user as unknown as any
 
     if(!auth.user) return <NotFound />
    
@@ -63,21 +66,28 @@ const UserInfo = () => {
 
         </div>
 
-        <div className='form-group'>
+        <div className='form-group my-3'>
             <label htmlFor='name'>Name</label>
             <input type='text' className='form-control' id='name'
             name='name' defaultValue={auth.user.name}
             onChange={handleChangeInput} /> 
         </div>
 
-        <div className='form-group'>
+        <div className='form-group my-3'>
             <label htmlFor='account'>Account</label>
             <input type='text' className='form-control' id='account'
             name='account' defaultValue={auth.user.account}
             onChange={handleChangeInput} disabled={true} /> 
         </div>
 
-        <div className='form-group'>
+        {
+        auth.user.type !== 'register' &&
+        <small className="text-danger">
+          * Quick login account with {auth.user.type} can't use this function *
+        </small>
+      }
+
+        <div className='form-group my-3'>
             <label htmlFor='password'>Password</label>
             <div className='pass'>
             <input type={typePass ? 'text' : 'password'} 
@@ -91,7 +101,7 @@ const UserInfo = () => {
             </div>
         </div>
 
-        <div className='form-group'>
+        <div className='form-group my-3'>
             <label htmlFor='cf_password'>Confirm Password</label>
             <div className='pass'>
             <input type={typecfPass ? 'text' : 'password'} 

@@ -24,6 +24,8 @@ app.get('/', (req, res) => {
     res.json({ msg: 'hello from klaus' });
 });
 app.use('/api', index_1.default.authRouter);
+app.use('/api', index_1.default.userRouter);
+app.use('/api', index_1.default.categoryRouter);
 //connect database
 (0, database_1.default)();
 // server listening

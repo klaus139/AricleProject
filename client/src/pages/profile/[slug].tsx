@@ -11,7 +11,6 @@ const profile = () => {
   const { slug }:any = useParams();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { auth } = useSelector((state: RootStore) => state)
-  console.log({userID: slug})
   return (
     <div className='row my-3'>
       <div className='col-md-5 mb-3'>

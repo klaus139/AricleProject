@@ -23,7 +23,9 @@ app.use(morgan('dev'));
 app.get('/', (req, res) => {
     res.json({ msg: 'hello from klaus'})
 })
-app.use('/api', routes.authRouter)
+app.use('/api', routes.authRouter);
+app.use('/api', routes.userRouter);
+app.use('/api', routes.categoryRouter);
 
 //connect database
 dbConnect();
