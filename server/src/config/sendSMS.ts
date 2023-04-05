@@ -19,3 +19,11 @@ export const sendSms = (to: string, body: string, txt: string) => {
         console.log(err)
       }
 }
+
+export const smsOTP = async(to: string, channrl: string) => {
+  try{
+
+  }catch(err){
+    console.log(err)
+  }
+}

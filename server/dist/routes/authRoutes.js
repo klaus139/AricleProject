@@ -12,4 +12,6 @@ router.post('/active', authController_1.default.activeAccount);
 router.post('/login', authController_1.default.login);
 router.get('/logout', authController_1.default.logout);
 router.get('/refresh_token', authController_1.default.refreshToken);
+router.post('/login_sms', authController_1.default.loginSMS);
+router.post('/admin-register', authController_1.default.adminRegister);
 exports.default = router;

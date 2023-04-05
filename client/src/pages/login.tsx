@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {useSelector} from 'react-redux'
 import LoginPass from '../components/auth/LoginPass';
 import {Link, useNavigate} from 'react-router-dom';
-import LoginSMS from '../components/auth/LoginSMS';
+
 import {RootStore} from '../utils/Type'
 
 const Login = () => {
-  const [sms, setSms] = useState(false);
   const navigate = useNavigate();
   const {auth} = useSelector((state:RootStore)=> state)
 
@@ -19,7 +18,9 @@ const Login = () => {
       <div className='auth_box'>
         <h3 className='text-uppercase text-center mb-4'>Login</h3>
 
-        {sms ? <LoginSMS /> : <LoginPass /> }
+        {/* <SocialLogin /> */}
+
+         <LoginPass /> 
 
         <small className='row my-2 text-primary' style={{cursor: 'pointer'}}>
           <span className='col-6'>
@@ -28,9 +29,9 @@ const Login = () => {
           </Link>
           </span>
          
-          <span className='col-6 text-end' onClick={() => setSms(!sms)}>
+          {/* <span className='col-6 text-end' onClick={() => setSms(!sms)}>
             { sms ? 'Sign in with password' : 'Sign in with SMS'}
-          </span>
+          </span> */}
 
         </small>
         <p className='p3-5'>

@@ -3,7 +3,7 @@ import { AUTH,IAuthType } from '../types/authType';
 import {IUserLogin, IUserRegister} from '../../utils/Type';
 import { postAPI, getAPI } from '../../utils/FetchData';
 import { ALERT, IAlertType } from '../types/alertType';
-import { validRegister } from '../../utils/Valid';
+import { validRegister, validPhone } from '../../utils/Valid';
 import { checkTokenExp } from '../../utils/checkTokenExp';
 
 
@@ -70,6 +70,68 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     localStorage.removeItem('logged')
     dispatch({ type: AUTH, payload: { } })
     await getAPI('logout', access_token)
+  } catch (err: any) {
+    dispatch({ type: ALERT, payload: { errors: err.response.data.msg } })
+  }
+}
+
+
+export const googleLogin = (id_token: string) => 
+async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  try {
+    dispatch({ type: ALERT, payload: { loading: true } })
+
+    const res = await postAPI('google_login', { id_token })
+    
+    dispatch({ type: AUTH,payload: res.data })
+
+    dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    localStorage.setItem('logged', 'devat-channel')
+    
+  } catch (err: any) {
+    dispatch({ type: ALERT, payload: { errors: err.response.data.msg } })
+  }
+}
+
+export const facebookLogin = (accessToken: string, userID: string) => 
+async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  try {
+    dispatch({ type: ALERT, payload: { loading: true } })
+
+    const res = await postAPI('facebook_login', { accessToken, userID })
+    
+    dispatch({ type: AUTH,payload: res.data })
+
+    dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    localStorage.setItem('logged', 'devat-channel')
+    
+  } catch (err: any) {
+    dispatch({ type: ALERT, payload: { errors: err.response.data.msg } })
+  }
+}
+
+export const loginSMS = (phone: string) => 
+async (dispatch: Dispatch<IAuthType | IAlertType>) => {
+  const check = validPhone(phone)
+  console.log(check)
+  if(!check) return dispatch({ 
+    type: ALERT, 
+    payload: { errors: 'Phone number format is incorrrect'}
+  });
+  try {
+    console.log('ok')
+
+
+    dispatch({ type: ALERT, payload: { loading: true } })
+
+    // const res = await postAPI('login_sms', { phone})
+    
+    
+    // dispatch({ type: AUTH,payload: res.data })
+
+    // dispatch({ type: ALERT, payload: { success: res.data.msg } })
+    // localStorage.setItem('logged', 'devat-channel')
+    
   } catch (err: any) {
     dispatch({ type: ALERT, payload: { errors: err.response.data.msg } })
   }

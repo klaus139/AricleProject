@@ -1,7 +1,7 @@
 import React from 'react';
 import Search from './Search';
 import Menu from './Menu';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
 

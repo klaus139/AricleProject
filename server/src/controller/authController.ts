@@ -6,7 +6,7 @@ import {generateAccessToken, generateActiveToken, generateRefreshToken} from '..
 import sendEmail from '../config/sendMail';
 import { validPhone, validateEmail } from '../middleware/valid';
 import { sendSms } from '../config/sendSMS';
-import { IDecodedToken, IUser } from '../config/interface';
+import { IDecodedToken, IUser, IUserParams } from '../config/interface';
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -47,29 +47,64 @@ const authCtrl = {
         }
 
     },
-    activeAccount: async(req: Request, res: Response) => {
-        try {
-          const { active_token } = req.body
-    
-          const decoded = <IDecodedToken>jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
-    
-          const { newUser } = decoded 
-    
-          if(!newUser) return res.status(400).json({msg: "Invalid authentication."})
+    adminRegister: async(req: Request, res: Response) => {
+      try{
+          const { name, account, password } = req.body;
+  
+          const user = await User.findOne({account})
+          if(user) return res.status(400).json({msg: 'Email or phone number already exist.'})
+  
+          const passwordHash = await bcrypt.hash(password, 12)
+  
+          const newUser = {
+              name, 
+              account, 
+              password: passwordHash,
+              role: 'admin' // Add the 'role' property to create an admin user
+          }
+  
+          const active_token = generateActiveToken({newUser})
+  
+          const url = `${CLIENT_URL}/active/${active_token}`
           
-          const user = await User.findOne({account: newUser.account})
-          if(user) return res.status(400).json({msg: "Account already exists."})
-    
-          const new_user = new User(newUser)
-    
-          await new_user.save()
-    
-          res.json({msg: "Account has been activated!"})
-    
-        } catch (err: any) {
+          await User.create(newUser); // Pass the newUser object to the create() method
+  
+          if(validateEmail(account)){
+              sendEmail(account, url, 'verify your email address')
+              return res.json({ msg: "success! please check your email to verify your account" })
+          } else if(validPhone(account)){
+              sendSms(account, url, "Verify your phone number")
+              return res.json({ msg: 'Success! Please check your phone'})
+          }
+  
+          
+      } catch(err: any) {
           return res.status(500).json({msg: err.message})
-        }
-    },
+      }
+  },
+  activeAccount: async(req: Request, res: Response) => {
+    try {
+      const { active_token } = req.body
+
+      const decoded = <IDecodedToken>jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
+
+      const { newUser } = decoded 
+
+      if(!newUser) return res.status(400).json({msg: "Invalid authentication."})
+      
+      const user = await User.findOne({account: newUser.account})
+      if(user) return res.status(400).json({msg: "Account already exists."})
+
+      const new_user = new User(newUser)
+
+      await new_user.save()
+
+      res.json({msg: "Account has been activated!"})
+
+    } catch (err: any) {
+      return res.status(500).json({msg: err.message})
+    }
+  },
     login: async(req: Request, res: Response) => {
         try {
           const { account, password } = req.body
@@ -110,7 +145,15 @@ const authCtrl = {
           return res.status(500).json({msg: err.message})
         }
       },
-    
+      loginSMS: async(req: Request, res: Response) => {
+
+        try {
+          const { phone } = req.body
+          console.log(phone)
+        } catch (err: any) {
+          return res.status(500).json({msg: err.message})
+        }
+      },
 }
 
 const loginUser = async(user: IUser, password: string, res: Response) => {
@@ -131,6 +174,23 @@ const loginUser = async(user: IUser, password: string, res: Response) => {
         access_token,
         user: { ...user._doc, password: ''}
     })
+}
+
+const registerUser = async (user: IUserParams, res: Response) => {
+  const newUser = new User(user)
+
+  const access_token = generateAccessToken({id: newUser._id})
+  const refresh_token = generateRefreshToken({id: newUser._id})
+
+  newUser.rf_token = refresh_token
+  await newUser.save()
+
+  res.json({
+    msg: 'Login Success!',
+    access_token,
+    user: { ...newUser._doc, password: '' }
+  })
+
 }
 
 export default authCtrl;

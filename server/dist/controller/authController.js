@@ -48,6 +48,35 @@ const authCtrl = {
             return res.status(500).json({ msg: err.message });
         }
     }),
+    adminRegister: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { name, account, password } = req.body;
+            const user = yield userModel_1.default.findOne({ account });
+            if (user)
+                return res.status(400).json({ msg: 'Email or phone number already exist.' });
+            const passwordHash = yield bcrypt_1.default.hash(password, 12);
+            const newUser = {
+                name,
+                account,
+                password: passwordHash,
+                role: 'admin' // Add the 'role' property to create an admin user
+            };
+            const active_token = (0, generateToken_1.generateActiveToken)({ newUser });
+            const url = `${CLIENT_URL}/active/${active_token}`;
+            yield userModel_1.default.create(newUser); // Pass the newUser object to the create() method
+            if ((0, valid_1.validateEmail)(account)) {
+                (0, sendMail_1.default)(account, url, 'verify your email address');
+                return res.json({ msg: "success! please check your email to verify your account" });
+            }
+            else if ((0, valid_1.validPhone)(account)) {
+                (0, sendSMS_1.sendSms)(account, url, "Verify your phone number");
+                return res.json({ msg: 'Success! Please check your phone' });
+            }
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
     activeAccount: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { active_token } = req.body;
@@ -107,6 +136,15 @@ const authCtrl = {
             return res.status(500).json({ msg: err.message });
         }
     }),
+    loginSMS: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { phone } = req.body;
+            console.log(phone);
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
 };
 const loginUser = (user, password, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isMatch = yield bcrypt_1.default.compare(password, user.password);
@@ -123,6 +161,18 @@ const loginUser = (user, password, res) => __awaiter(void 0, void 0, void 0, fun
         msg: 'Login success!',
         access_token,
         user: Object.assign(Object.assign({}, user._doc), { password: '' })
+    });
+});
+const registerUser = (user, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const newUser = new userModel_1.default(user);
+    const access_token = (0, generateToken_1.generateAccessToken)({ id: newUser._id });
+    const refresh_token = (0, generateToken_1.generateRefreshToken)({ id: newUser._id });
+    newUser.rf_token = refresh_token;
+    yield newUser.save();
+    res.json({
+        msg: 'Login Success!',
+        access_token,
+        user: Object.assign(Object.assign({}, newUser._doc), { password: '' })
     });
 });
 exports.default = authCtrl;
