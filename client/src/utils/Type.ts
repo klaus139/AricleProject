@@ -50,3 +50,12 @@ export interface IAuth {
     token: string
     user: IUser
 }
+
+export interface ICategory {
+    _id: string
+    name: string
+    createAt: string
+    updatedAt: string
+ 
+    
+}

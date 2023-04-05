@@ -10,5 +10,6 @@ router.route('/category')
 
 router.route('/category/:id')
   .patch(auth, categoryCtrl.updateCategory)
+  .delete(auth, categoryCtrl.deleteCategory)
 
 export default router;

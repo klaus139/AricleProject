@@ -11,5 +11,6 @@ router.route('/category')
     .get(categoryCtrl_1.default.getCategories)
     .post(auth_1.default, categoryCtrl_1.default.createCategory);
 router.route('/category/:id')
-    .patch(auth_1.default, categoryCtrl_1.default.updateCategory);
+    .patch(auth_1.default, categoryCtrl_1.default.updateCategory)
+    .delete(auth_1.default, categoryCtrl_1.default.deleteCategory);
 exports.default = router;
