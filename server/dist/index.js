@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 app.use('/api', index_1.default.authRouter);
 app.use('/api', index_1.default.userRouter);
 app.use('/api', index_1.default.categoryRouter);
+app.use('/api', index_1.default.blogRouter);
 //connect database
 (0, database_1.default)();
 // server listening

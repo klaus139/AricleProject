@@ -1,18 +1,29 @@
-import * as type from '../types/categoryTypes';
-import {ICategory} from '../../utils/Type';
+import * as types from '../types/categoryTypes'
+import { ICategory } from '../../utils/Type'
 
-const categoryReducer = (state: ICategory[] = [], action: type.ICategoryType):ICategory[] => {
-    switch(action.type){
-        case type.CREATE_CATEGORY:
-            return [action.payload, ...state];
+const categoryReducer = (
+  state: ICategory[] = [], action: types.ICategoryType
+): ICategory[] => {
+  switch (action.type) {
+    case types.CREATE_CATEGORY:
+      return [action.payload, ...state]
 
-        case type.GET_CATEGORIES:
-            return action.payload
-        
+    case types.GET_CATEGORIES:
+      return action.payload
 
-        default:
-            return state;
-    }
+    case types.UPDATE_CATEGORY:
+      return state.map(item => (
+        item._id === action.payload._id
+        ? { ...item, name: action.payload.name}
+        : item
+      ))
+
+    case types.DELETE_CATEGORY:
+      return state.filter(item => item._id !== action.payload)
+      
+    default:
+      return state;
+  }
 }
 
 export default categoryReducer;
