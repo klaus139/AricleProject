@@ -8,17 +8,18 @@ import {Alert} from './components/alert/Alert';
 
 import {refreshToken} from './redux/actions/authAction';
 import { getCategories } from './redux/actions/categoryActions';
+import { getHomeBlogs } from './redux/actions/blogAction';
 
 function App() {
   const dispatch = useDispatch()
   useEffect(()=> {
     dispatch(refreshToken() as unknown as any)
     dispatch(getCategories() as unknown as any)
+    dispatch(getHomeBlogs()as unknown as any)
   },[dispatch])
 
   return (
-    <div className="container">
-      
+    <div className="container">    
       <Router>
         <Alert />
       <Header />
