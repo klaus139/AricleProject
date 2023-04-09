@@ -13,6 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const blogModel_1 = __importDefault(require("../models/blogModel"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const Pagination = (req) => {
+    let page = Number(req.query.page) * 1 || 1;
+    let limit = Number(req.query.limit) * 1 || 4;
+    let skip = (page - 1) * limit;
+    return { page, limit, skip };
+};
 const blogCtrl = {
     createBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(req.user, req.body);
@@ -86,6 +93,70 @@ const blogCtrl = {
                 }
             ]);
             res.json(blogs);
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
+    getBlogsByCategory: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { limit, skip } = Pagination(req);
+        try {
+            const Data = yield blogModel_1.default.aggregate([
+                {
+                    $facet: {
+                        totalData: [
+                            {
+                                $match: {
+                                    category: new mongoose_1.default.Types.ObjectId(req.params.id)
+                                }
+                            },
+                            // User
+                            {
+                                $lookup: {
+                                    from: "users",
+                                    let: { user_id: "$user" },
+                                    pipeline: [
+                                        { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
+                                        { $project: { password: 0 } }
+                                    ],
+                                    as: "user"
+                                }
+                            },
+                            // array -> object
+                            { $unwind: "$user" },
+                            // Sorting
+                            { $sort: { createdAt: -1 } },
+                            { $skip: skip },
+                            { $limit: limit }
+                        ],
+                        totalCount: [
+                            {
+                                $match: {
+                                    category: new mongoose_1.default.Types.ObjectId(req.params.id)
+                                }
+                            },
+                            { $count: 'count' }
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        count: { $arrayElemAt: ["$totalCount.count", 0] },
+                        totalData: 1
+                    }
+                }
+            ]);
+            const blogs = Data[0].totalData;
+            const count = Data[0].count;
+            // Pagination
+            let total = 0;
+            if (count % limit === 0) {
+                total = count / limit;
+            }
+            else {
+                total = Math.floor(count / limit) + 1;
+            }
+            res.json({ blogs, total });
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });

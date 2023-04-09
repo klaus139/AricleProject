@@ -60,14 +60,20 @@ export interface ICategory {
     
 }
 
+export interface IUser {
+    _id: string;
+    name: string;
+  }
+  
 export interface IBlog {
-    _id?: string
-    user: string
-    title: string
-    content: string
-    description: string
-    thumbnail: string | File
-    category: string 
-    pdf?: string | File
-    createdAt: string
-}
+    _id?: string;
+    user: string | IUser;
+    title: string;
+    content: string;
+    description: string;
+    thumbnail: string | File;
+    category: string;
+    pdf?: string | File;
+    createdAt: string;
+  }
+  

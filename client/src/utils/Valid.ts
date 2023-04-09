@@ -53,8 +53,8 @@ export const validCreateBlog = ({
 
   if(title.trim().length < 10){
     err.push("Title has at least 10 characters.")
-  }else if(title.trim().length > 100){
-    err.push("Title is up to 100 characters long.")
+  }else if(title.trim().length > 200){
+    err.push("Title is up to 300 characters long.")
   }
 
   if(content.trim().length < 1000){
@@ -63,7 +63,7 @@ export const validCreateBlog = ({
 
   if(description.trim().length < 50){
     err.push("Description has at least 50 characters.")
-  }else if(description.trim().length > 300){
+  }else if(description.trim().length > 1000){
     err.push("Description is up to 300 characters long.")
   }
 

@@ -8,7 +8,7 @@ const blogSchema = new mongoose.Schema({
     require: true,
     trim: true,
     minLength: 10,
-    maxLength: 100
+    maxLength: 200
   },
   content: {
     type: String,
@@ -20,7 +20,7 @@ const blogSchema = new mongoose.Schema({
     require: true,
     trim: true,
     minLength: 50,
-    maxLength: 300
+    maxLength: 1000
   },
   thumbnail:{
     type: String,

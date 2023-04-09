@@ -43,7 +43,7 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
 
         <small className="text-muted position-absolute"
         style={{ bottom: 0, right: '3px', opacity: '0.3'}}>
-          {blog.title.length}/100
+          {blog.title.length}/300
         </small>
       </div>
 
@@ -67,7 +67,7 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
 
         <small className="text-muted position-absolute"
         style={{ bottom: 0, right: '3px', opacity: '0.3'}}>
-          {blog.description.length}/300
+          {blog.description.length}/500
         </small>
       </div>
 
