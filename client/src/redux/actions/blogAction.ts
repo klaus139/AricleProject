@@ -46,18 +46,20 @@ export const getHomeBlogs = () =>
             dispatch({ type: ALERT, payload: { errors: err.response.data.msg} })
         }
     }
-
-export const getBlogsByCategoryId = (id: string) => 
+    export const getBlogsByCategoryId = (id: string, search: string) => 
     async (dispatch: Dispatch<IAlertType | IGetBlogsCategoryType>) => {
        
         try{
+            let limit = 4;
+            let value = search ? search : `?page=${1}`;
+            console.log(value)
             dispatch({ type: ALERT, payload: {loading: true}})
             
-            const res = await getAPI(`blogs/category/${id}`)
-          console.log(res)
+            const res = await getAPI(`blogs/category/${id}${value}&limit=${limit}`)
+        
           dispatch({
             type: GET_BLOGS_CATEGORY_ID,
-            payload: {...res.data, id}
+            payload: {...res.data, id, search}
           })
             dispatch({ type: ALERT, payload: { loading: false }})
 
@@ -65,7 +67,3 @@ export const getBlogsByCategoryId = (id: string) =>
             dispatch({ type: ALERT, payload: { errors: err.response.data.msg} })
         }
     }
-
-
-
-

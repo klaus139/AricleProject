@@ -23,6 +23,7 @@ export interface IBlogsCategory {
   id: string;
   blogs: IBlog[];
   total: number;
+  search: string;
   every: (callbackfn: (value: IBlog, index: number, array: IBlog[]) => boolean, thisArg?: any) => boolean;
 }
 
