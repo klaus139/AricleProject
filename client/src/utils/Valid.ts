@@ -47,7 +47,7 @@ export function validateEmail(email: string) {
 
 //Valid Blog
 export const validCreateBlog = ({
-  title, content, description, thumbnail, category, pdf
+  title, content, description, thumbnail, category, 
 }: IBlog) => {
   const err: string[] = []
 

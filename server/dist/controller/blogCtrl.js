@@ -162,5 +162,81 @@ const blogCtrl = {
             return res.status(500).json({ msg: err.message });
         }
     }),
+    getBlogsByUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { limit, skip } = Pagination(req);
+        try {
+            const Data = yield blogModel_1.default.aggregate([
+                {
+                    $facet: {
+                        totalData: [
+                            {
+                                $match: {
+                                    user: new mongoose_1.default.Types.ObjectId(req.params.id)
+                                }
+                            },
+                            // User
+                            {
+                                $lookup: {
+                                    from: "users",
+                                    let: { user_id: "$user" },
+                                    pipeline: [
+                                        { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
+                                        { $project: { password: 0 } }
+                                    ],
+                                    as: "user"
+                                }
+                            },
+                            // array -> object
+                            { $unwind: "$user" },
+                            // Sorting
+                            { $sort: { createdAt: -1 } },
+                            { $skip: skip },
+                            { $limit: limit }
+                        ],
+                        totalCount: [
+                            {
+                                $match: {
+                                    user: new mongoose_1.default.Types.ObjectId(req.params.id)
+                                }
+                            },
+                            { $count: 'count' }
+                        ]
+                    }
+                },
+                {
+                    $project: {
+                        count: { $arrayElemAt: ["$totalCount.count", 0] },
+                        totalData: 1
+                    }
+                }
+            ]);
+            const blogs = Data[0].totalData;
+            const count = Data[0].count;
+            // Pagination
+            let total = 0;
+            if (count % limit === 0) {
+                total = count / limit;
+            }
+            else {
+                total = Math.floor(count / limit) + 1;
+            }
+            res.json({ blogs, total });
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
+    getBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const blog = yield blogModel_1.default.findOne({ _id: req.params.id })
+                .populate("user", "-password");
+            if (!blog)
+                return res.status(400).json({ msg: "Blog does not exist." });
+            return res.json(blog);
+        }
+        catch (err) {
+            return res.status(500).json({ msg: "Blog does not exist something went wrong" });
+        }
+    }),
 };
 exports.default = blogCtrl;

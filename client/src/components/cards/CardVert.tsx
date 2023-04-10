@@ -21,7 +21,7 @@ const CardVert: React.FC<IProps> = ({ blog }) => {
       <div className="card-body">
         <h5 className="card-title">
           <Link
-            to={`/blog/${blog._id}`} 
+            to={`/blog/${blog._id}`}
             style={{ textDecoration: 'none', textTransform: 'capitalize' }}
           >
             {blog.title.slice(0, 50) + '...'}

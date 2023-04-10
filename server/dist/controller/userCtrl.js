@@ -45,6 +45,17 @@ const userCtrl = {
         catch (err) {
             return res.status(500).json({ msg: err.message });
         }
+    }),
+    getUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const user = yield userModel_1.default.findById(req.params.id).select('-password');
+            if (!user)
+                return res.status(400).json({ msg: 'User does not exist.' });
+            res.json(user);
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
     })
 };
 exports.default = userCtrl;

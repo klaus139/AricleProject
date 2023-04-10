@@ -20,17 +20,11 @@ export interface IGetHomeBlogsType {
 }
 
 export interface IBlogsCategory {
-  id: string;
-  blogs: IBlog[];
-  total: number;
-  search: string;
-  every: (callbackfn: (value: IBlog, index: number, array: IBlog[]) => boolean, thisArg?: any) => boolean;
+  id: string
+  blogs: IBlog[]
+  total: number
+  search: string
 }
-
-
-
-
-
 
 export interface IGetBlogsCategoryType {
   type: typeof GET_BLOGS_CATEGORY_ID,
