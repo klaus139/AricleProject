@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import RegisterForm from '../components/auth/RegisterForm';
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className="auth_page">
@@ -19,7 +20,7 @@ const Register = () => {
             style={{ color: 'crimson' }}
             onClick={(event) => {
               event.preventDefault();
-              navigate('/login');
+              navigate(`/login${location.search}`);
             }}
           >
             Login Now
