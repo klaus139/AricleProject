@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const categoryModel_1 = __importDefault(require("../models/categoryModel"));
+const blogModel_1 = __importDefault(require("../models/blogModel"));
 const categoryCtrl = {
     createCategory: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!req.user)
@@ -67,6 +68,11 @@ const categoryCtrl = {
         if (req.user.role !== 'admin')
             return res.status(400).json({ msg: "Invalid Authentication." });
         try {
+            const blog = yield blogModel_1.default.findOne({ category: req.params.id });
+            if (blog)
+                return res.status(400).json({
+                    msg: "Can not delete! In this category also exist blogs."
+                });
             const category = yield categoryModel_1.default.findByIdAndDelete(req.params.id);
             if (!category)
                 return res.status(400).json({ msg: "Category does not exists." });

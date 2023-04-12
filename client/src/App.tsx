@@ -10,6 +10,9 @@ import {refreshToken} from './redux/actions/authAction';
 import { getCategories } from './redux/actions/categoryActions';
 import { getHomeBlogs } from './redux/actions/blogAction';
 
+import io from 'socket.io-client'
+import SocketClient from './SocketClient'
+
 function App() {
   const dispatch = useDispatch()
   useEffect(()=> {
@@ -18,8 +21,15 @@ function App() {
     dispatch(getHomeBlogs()as unknown as any)
   },[dispatch])
 
+  useEffect(()=> {
+    const socket = io()
+    dispatch({type: 'SOCKET', payload: socket})
+    return () => { socket.close()}
+  },[dispatch])
+
   return (
-    <div className="container">    
+    <div className="container"> 
+    <SocketClient />   
       <Router>
         <Alert />
       <Header />

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const commentModel_1 = __importDefault(require("../models/commentModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const index_1 = require("../index");
 const Pagination = (req) => {
     let page = Number(req.query.page) * 1 || 1;
     let limit = Number(req.query.limit) * 1 || 4;
@@ -23,17 +24,19 @@ const Pagination = (req) => {
 const commentCtrl = {
     createComment: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!req.user)
-            return res.status(400).json({ msg: 'Invalid Authentication' });
+            return res.status(400).json({ msg: "invalid Authentication." });
         try {
-            const { content, blog_id, blog_user_id, } = req.body;
+            const { content, blog_id, blog_user_id } = req.body;
             const newComment = new commentModel_1.default({
                 user: req.user._id,
                 content,
                 blog_id,
-                blog_user_id,
+                blog_user_id
             });
+            const data = Object.assign(Object.assign({}, newComment._doc), { user: req.user, createdAt: new Date().toISOString() });
+            index_1.io.to(`${blog_id}`).emit('createComment', data);
             yield newComment.save();
-            res.json(newComment);
+            return res.json(newComment);
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });
@@ -133,5 +136,77 @@ const commentCtrl = {
             return res.status(500).json({ msg: err.message });
         }
     }),
+    replyComment: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!req.user)
+            return res.status(400).json({ msg: "invalid Authentication." });
+        try {
+            const { content, blog_id, blog_user_id, comment_root, reply_user } = req.body;
+            const newComment = new commentModel_1.default({
+                user: req.user._id,
+                content,
+                blog_id,
+                blog_user_id,
+                comment_root,
+                reply_user: reply_user._id
+            });
+            yield commentModel_1.default.findOneAndUpdate({ _id: comment_root }, {
+                $push: { replyCM: newComment._id }
+            });
+            const data = Object.assign(Object.assign({}, newComment._doc), { user: req.user, reply_user: reply_user, createdAt: new Date().toISOString() });
+            index_1.io.to(`${blog_id}`).emit('replyComment', data);
+            yield newComment.save();
+            return res.json(newComment);
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
+    updateComment: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!req.user)
+            return res.status(400).json({ msg: "invalid Authentication." });
+        try {
+            const { data } = req.body;
+            const comment = yield commentModel_1.default.findOneAndUpdate({
+                _id: req.params.id, user: req.user.id
+            }, { content: data.content });
+            if (!comment)
+                return res.status(400).json({ msg: "Comment does not exits." });
+            index_1.io.to(`${data.blog_id}`).emit('updateComment', data);
+            return res.json({ msg: "Update Success!" });
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
+    deleteComment: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!req.user)
+            return res.status(400).json({ msg: "invalid Authentication." });
+        try {
+            const comment = yield commentModel_1.default.findOneAndDelete({
+                _id: req.params.id,
+                $or: [
+                    { user: req.user._id },
+                    { blog_user_id: req.user._id }
+                ]
+            });
+            if (!comment)
+                return res.status(400).json({ msg: "Comment does not exits." });
+            if (comment.comment_root) {
+                // update replyCM
+                yield commentModel_1.default.findOneAndUpdate({ _id: comment.comment_root }, {
+                    $pull: { replyCM: comment._id }
+                });
+            }
+            else {
+                // delete all comments in replyCM
+                yield commentModel_1.default.deleteMany({ _id: { $in: comment.replyCM } });
+            }
+            index_1.io.to(`${comment.blog_id}`).emit('deleteComment', comment);
+            return res.json({ msg: "Delete Success!" });
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    })
 };
 exports.default = commentCtrl;

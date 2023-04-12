@@ -240,6 +240,78 @@ const blogCtrl = {
         return res.status(500).json({ msg: "Blog does not exist something went wrong" })
       }
     },
+    updateBlog: async (req: IReqAuth, res: Response) => {
+      if(!req.user) 
+        return res.status(400).json({msg: "Invalid Authentication."})
+  
+      try {
+        const blog = await Blog.findOneAndUpdate({
+          _id: req.params.id, user: req.user._id
+        }, req.body)
+  
+        if(!blog) return res.status(400).json({msg: "Invalid Authentication."})
+  
+        res.json({ msg: 'Update Success!', blog })
+  
+      } catch (err: any) {
+        return res.status(500).json({msg: err.message})
+      }
+    },
+    deleteBlog: async (req: IReqAuth, res: Response) => {
+      if(!req.user) 
+        return res.status(400).json({msg: "Invalid Authentication."})
+  
+      try {
+        // Delete Blog
+        const blog = await Blog.findOneAndDelete({
+          _id: req.params.id, user: req.user._id
+        })
+  
+        if(!blog) 
+          return res.status(400).json({msg: "Invalid Authentication."})
+  
+        // Delete Comments
+        //await Comment.deleteMany({ blog_id: blog._id })
+  
+        res.json({ msg: 'Delete Success!' })
+  
+      } catch (err: any) {
+        return res.status(500).json({msg: err.message})
+      }
+    },
+    searchBlogs: async (req: Request, res: Response) => {
+      try {
+        const blogs = await Blog.aggregate([
+          {
+            $search: {
+              index: "searchTitle",
+              autocomplete: {
+                "query": `${req.query.title}`,
+                "path": "title"
+              }
+            }
+          },
+          { $sort: { createdAt: -1 } },
+          { $limit: 5},
+          {
+            $project: {
+              title: 1,
+              description: 1,
+              thumbnail: 1,
+              createdAt: 1
+            }
+          }
+        ])
+  
+        if(!blogs.length)
+          return res.status(400).json({msg: 'No Blogs.'})
+  
+        res.json(blogs)
+  
+      } catch (err: any) {
+        return res.status(500).json({msg: err.message})
+      }
+    },
 }
 
 

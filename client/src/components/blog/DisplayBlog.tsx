@@ -44,11 +44,10 @@ const DisplayBlog: React.FC<IProps>= ({blog}) => {
         
       },[comments.data]);
 
-      const fetchComments = useCallback( async(id: string) => {
+      const fetchComments = useCallback(async(id: string, num = 1) => {
         setLoading(true)
-        dispatch(getComments(id) as unknown as any)
+        await dispatch(getComments(id, num)as unknown as any)
         setLoading(false)
-      
       },[dispatch])
 
       useEffect(()=> {

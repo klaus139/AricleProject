@@ -5,9 +5,13 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 dotenv.config();
 import dbConnect from './config/database';
+import {SocketServer} from './config/socket'
 
 //import routes
 import routes from './routes/index'
+
+import {createServer} from 'http'
+import {Server, Socket} from 'socket.io'
 
 
 //middleware
@@ -18,16 +22,20 @@ app.use(cors());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
+//socket.io
+const http = createServer(app)
+export const io = new Server(http)
+
+
+io.on("connection", (socket: Socket) => SocketServer(socket))
+
 
 //routes
-app.get('/', (req, res) => {
-    res.json({ msg: 'hello from klaus'})
-})
-app.use('/api', routes.authRouter);
-app.use('/api', routes.userRouter);
-app.use('/api', routes.categoryRouter);
-app.use('/api', routes.blogRouter);
-app.use('/api', routes.commentRouter)
+// app.get('/', (req, res) => {
+//     res.json({ msg: 'hello from klaus'})
+// })
+app.use('/api', routes);
+
 
 //connect database
 dbConnect();
@@ -35,6 +43,6 @@ dbConnect();
 
 // server listening
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
     console.log(`Server is running on port`, PORT);
 })

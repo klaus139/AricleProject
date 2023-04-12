@@ -25,14 +25,6 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
       setBlog({...blog, thumbnail: file})
     }
   }
-  // const handleChangePdf = (e: InputChange) => {
-  //   const target = e.target as HTMLInputElement
-  //   const files = target.files
-  //   if(files){
-  //     const file = files[0]
-  //     setBlog({...blog, pdf: file})
-  //   }
-  // }
 
   return (
     <form>
@@ -43,22 +35,14 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
 
         <small className="text-muted position-absolute"
         style={{ bottom: 0, right: '3px', opacity: '0.3'}}>
-          {blog.title.length}/300
+          {blog.title.length}/50
         </small>
       </div>
 
       <div className="form-group my-3">
         <input type="file" className="form-control"
-        placeholder='select thumbnail'
-        title='image'
         accept="image/*" onChange={handleChangeThumbnail} />
       </div>
-      {/* <div className="form-group my-3">
-        <input type="file" className="form-control"
-        title='pdf'
-        placeholder='select pdf'
-        accept="pdf/*" onChange={handleChangePdf} />
-      </div> */}
 
       <div className="form-group position-relative">
         <textarea className="form-control" rows={4}
@@ -67,7 +51,7 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
 
         <small className="text-muted position-absolute"
         style={{ bottom: 0, right: '3px', opacity: '0.3'}}>
-          {blog.description.length}/500
+          {blog.description.length}/200
         </small>
       </div>
 

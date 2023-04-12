@@ -11,11 +11,11 @@ router.get('/blogs/category/:id', blogCtrl.getBlogsByCategory)
 router.get('/blogs/user/:id', blogCtrl.getBlogsByUser)
 router.get('/blog/:id', blogCtrl.getBlog);
 
-// router.route('/blog/:id')
-//   .get(blogCtrl.getBlog)
-//   .put(auth, blogCtrl.updateBlog)
-//   .delete(auth, blogCtrl.deleteBlog)
+router.route('/blog/:id')
+  .get(blogCtrl.getBlog)
+  .put(auth, blogCtrl.updateBlog)
+  .delete(auth, blogCtrl.deleteBlog)
 
-// router.get('/search/blogs', blogCtrl.searchBlogs)
+router.get('/search/blogs', blogCtrl.searchBlogs)
 
 export default router;

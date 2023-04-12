@@ -12,9 +12,9 @@ router.get('/home/blogs', blogCtrl_1.default.getHomeBlogs);
 router.get('/blogs/category/:id', blogCtrl_1.default.getBlogsByCategory);
 router.get('/blogs/user/:id', blogCtrl_1.default.getBlogsByUser);
 router.get('/blog/:id', blogCtrl_1.default.getBlog);
-// router.route('/blog/:id')
-//   .get(blogCtrl.getBlog)
-//   .put(auth, blogCtrl.updateBlog)
-//   .delete(auth, blogCtrl.deleteBlog)
-// router.get('/search/blogs', blogCtrl.searchBlogs)
+router.route('/blog/:id')
+    .get(blogCtrl_1.default.getBlog)
+    .put(auth_1.default, blogCtrl_1.default.updateBlog)
+    .delete(auth_1.default, blogCtrl_1.default.deleteBlog);
+router.get('/search/blogs', blogCtrl_1.default.searchBlogs);
 exports.default = router;

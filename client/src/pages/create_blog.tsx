@@ -1,18 +1,25 @@
-import React,{useState, useRef, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {RootStore, IBlog} from '../utils/Type';
-import NotFound from '../components/global/NotFound';
-import CardHoriz from '../components/cards/CardHoriz';
-import CreateForm from '../components/cards/CreateForm';
-import Quill from '../components/editor/ReactQuill';
-import { validCreateBlog } from '../utils/Valid';
-import {ALERT} from '../redux/types/alertType'
-import { imageUpload } from '../utils/ImageUpload';
-import { createBlog } from '../redux/actions/blogAction';
+import React, { useState, useRef, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
+import { RootStore, IBlog, IUser } from '../utils/Type'
+import { validCreateBlog, shallowEqual } from '../utils/Valid'
+import { getAPI } from '../utils/FetchData'
 
+import NotFound from '../components/global/NotFound'
+import CreateForm from '../components/cards/CreateForm'
+import CardHoriz from '../components/cards/CardHoriz'
 
-const CreateBlog = () => {
+import Quill from '../components/editor/ReactQuill'
+
+import { ALERT } from '../redux/types/alertType'
+
+import { createBlog, updateBlog } from '../redux/actions/blogAction'
+
+interface IProps {
+  id?: string
+}
+
+const CreateBlog: React.FC<IProps> = ({id}) =>{
     const initState = {
         user: '',
         title: '',
@@ -33,31 +40,76 @@ const CreateBlog = () => {
 
     const {auth} = useSelector((state: RootStore) => state)
     const dispatch = useDispatch()
+    const [oldData, setOldData] = useState<IBlog>(initState)
 
-    useEffect(()=> {
+    
+    useEffect(() => {
+      if(!id) return;
+  
+      getAPI(`blog/${id}`)
+      .then(res => {
+        setBlog(res.data)
+        setBody(res.data.content)
+        setOldData(res.data)
+      })
+      .catch(err => console.log(err))
+  
+      const initData = {
+        user: '',
+        title: '',
+        content: '',
+        description: '',
+        thumbnail: '',
+        category: '',
+        createdAt: new Date().toISOString()
+      }
+  
+      return () => {
+        setBlog(initData)
+        setBody('')
+        setOldData(initData)
+      }
+    },[id])
+  
+    useEffect(() => {
       const div = divRef.current;
       if(!div) return;
+  
       const text = (div?.innerText as string)
       setText(text)
-    }, [blog, body])
-
+    },[body])
+  
     const handleSubmit = async() => {
       if(!auth.access_token) return;
-     
+  
       const check = validCreateBlog({...blog, content: text})
-
-      if(check.errLength !== 0) {
-        return dispatch({type: ALERT, payload: { errors: check.errMsg }})
+      if(check.errLength !== 0){
+        return dispatch({ type: ALERT, payload: { errors: check.errMsg } })
       }
-      
-      let newData = {...blog, content:body}
-      dispatch(createBlog(newData, auth.access_token) as unknown as any)
+  
+      let newData = {...blog, content: body}
+  
+      if(id){
+        if((blog.user as IUser)._id !== auth.user?._id)
+          return dispatch({
+            type: ALERT,
+            payload: { errors: 'Invalid Authentication.' }
+          })
+  
+        const result = shallowEqual(oldData, newData)
+        if(result) return dispatch({
+          type: ALERT,
+          payload: { errors: 'The data does not change.' }
+        })
+  
+        dispatch(updateBlog(newData, auth.access_token)as unknown as any)
+      }else{
+        dispatch(createBlog(newData, auth.access_token)as unknown as any)
+      }
     }
-
-
-
-    if(!auth.access_token) return <NotFound />
-    if(auth.user?.role !== 'admin') return <NotFound />
+  
+  
+    if(!auth.access_token) return <NotFound />;
   return (
     <div className='my-4 create_blog'>
         

@@ -23,6 +23,10 @@ export interface IUserRegister extends IUserLogin {
     name: string
     cf_password: string
   }
+
+  export interface IUserProfile extends IUserRegister {
+    avatar: string | File
+  }
   
 
 export interface IAlert {
