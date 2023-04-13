@@ -36,7 +36,7 @@ const Payment = () => {
       </div>
       <div className="payment__info">
         <div className="payment__card">
-          <h2 className="payment__card-title">Pay with Card Each download costs ₦3000.</h2>
+          <h2 className="payment__card-title">Pay with Card Each download costs <span className='span'>₦3000.</span></h2>
           <p className="payment__card-text">
             You can pay via bank transfer or via card upon successful payment the pdf document will be sent to your email
           </p>
@@ -73,11 +73,11 @@ const Payment = () => {
       <div>
           <p>For Complaints or inquiry contact our admins on </p>
           <div className="payment__contact-card">
-          <img src='https://nicklaus-portfolio.netlify.app/static/media/email.37b9e890eea501421fbf.png' alt="email" />
-          <a href="mailto:nickoklaus5@gmail.com" className="p-text">nickoklaus5@gmail.com</a>
+          <img src='https://nicklaus-portfolio.netlify.app/static/media/email.37b9e890eea501421fbf.png' alt="email" className='imgg' />
+          <a href="mailto:oleanproject@gmail.com" className="p-text">oleanproject@gmail.com</a>
         </div>
         <div className="payment__contact-card">
-          <img src='https://nicklaus-portfolio.netlify.app/static/media/mobile.145d9ce0157a56f8fcd8.png' alt="phone" />
+          <img src='https://nicklaus-portfolio.netlify.app/static/media/mobile.145d9ce0157a56f8fcd8.png' alt="phone" className='imgg'/>
           <a href="tel:+2348065252945" className="p-text">+2348065252945</a>
         </div>
         </div>

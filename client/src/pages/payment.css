@@ -15,11 +15,16 @@
   .payment__title {
     font-size: 28px;
     margin-bottom: 5px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    color: #23094d;
   }
   
   .payment__subtitle {
-    font-size: 24px;
+    font-size: 30px;
     margin-top: 0;
+    font-weight: bold;
+    color: #23094d
   }
   
   .payment__info {
@@ -67,17 +72,26 @@
   }
   
   .payment__button {
-    background-color: #00bfff;
+    background-color: #23094d;
     color: #fff;
     font-size: 18px;
-    border: none;
-    border-radius: 5px;
+    border-radius:20px;
     padding: 10px 20px;
     cursor: pointer;
   }
+  .span{
+    color:#23094d;
+    text-decoration: dashed;
+    font-weight: bold;
+  }
   
   .payment__button:hover {
-    background-color: #0080ff;
+    background-color: #c1e2f1;
+    border-radius: 20px;
+    color: black
+
+    
+    
   }
   
   .payment__contact-card {
@@ -85,18 +99,33 @@
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
     border-radius: 20px;
-    border-color: black;
+    border-color: rgb(108, 7, 17);
+    background-color: #110423;
+
   }
   
   .payment__contact-card img {
     height: 30px;
     margin-right: 10px;
   }
+  .imgg{
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
   
   .payment__contact-card a {
     font-size: 18px;
     text-decoration: none;
+  }
+  .p-text{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   /* Media queries for smaller screens */
