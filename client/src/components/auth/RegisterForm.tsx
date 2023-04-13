@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-
+import { useNavigate } from 'react-router-dom'
 import { InputChange, FormSubmit } from '../../utils/Type'
 import { register } from '../../redux/actions/authAction'
 
@@ -17,6 +17,7 @@ const RegisterForm = () => {
   const [typeCfPass, setTypeCfPass] = useState(false)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleChangeInput = (e: InputChange) => {
     const {value, name} = e.target
@@ -26,6 +27,7 @@ const RegisterForm = () => {
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
     dispatch(register(userRegister)as unknown as any) 
+    navigate('/login')
   }
 
   return (

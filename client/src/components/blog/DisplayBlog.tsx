@@ -83,6 +83,9 @@ const DisplayBlog: React.FC<IProps>= ({blog}) => {
         <div dangerouslySetInnerHTML={{
             __html: blog.content
         }}/>
+         
+         {auth.user
+         ?
          <button
         style={{
           backgroundColor: "#670909",
@@ -103,6 +106,11 @@ const DisplayBlog: React.FC<IProps>= ({blog}) => {
       >
         Click Here to get the full Article
       </button>
+      :
+      <h5 style={{color: 'blue'}}>
+          Please LogIn to get download Link.
+        </h5>
+      }
       <hr className="my-1" />
       <h3 style={{color: '#ff7a00'}}>✩ Comments ✩</h3>
 

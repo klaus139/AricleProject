@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
+
 
 const Footer = () => {
+
   return (
     <div className='text-center bg-light py-4'>
         <h4>Welcome to Olean Project</h4>

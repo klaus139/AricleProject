@@ -1,0 +1,154 @@
+/* Default styles */
+
+.payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .payment__header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .payment__title {
+    font-size: 28px;
+    margin-bottom: 5px;
+  }
+  
+  .payment__subtitle {
+    font-size: 24px;
+    margin-top: 0;
+  }
+  
+  .payment__info {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .payment__card,
+  .payment__bank {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 30px;
+  }
+  
+  .payment__card-title,
+  .payment__bank-title {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  
+  .payment__card-text,
+  .payment__bank-text {
+    font-size: 18px;
+    margin-top: 0;
+  }
+  
+  .payment__bank-details {
+    margin-top: 20px;
+  }
+  
+  .payment__bank-name {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .payment__bank-info {
+    font-size: 18px;
+    margin-top: 0;
+  }
+  
+  .payment__bank-info span {
+    font-weight: bold;
+  }
+  
+  .payment__button {
+    background-color: #00bfff;
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .payment__button:hover {
+    background-color: #0080ff;
+  }
+  
+  .payment__contact-card {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    border-color: black;
+  }
+  
+  .payment__contact-card img {
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .payment__contact-card a {
+    font-size: 18px;
+    text-decoration: none;
+  }
+  
+  /* Media queries for smaller screens */
+  
+  @media (max-width: 768px) {
+    .payment__card,
+    .payment__bank {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+    
+    .payment__button {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+    
+    .payment__contact-card img {
+      height: 20px;
+    }
+    
+    .payment__contact-card a {
+      font-size: 16px;
+    }
+  }
+  
+  /* Media queries for even smaller screens */
+  
+  @media (max-width: 480px) {
+    .payment__title {
+      font-size: 24px;
+    }
+    
+    .payment__subtitle {
+      font-size: 20px;
+    }
+    
+    .payment__card-title,
+    .payment__bank-title {
+      font-size: 20px;
+    }
+    
+    .payment__card-text,
+    .payment__bank-text {
+      font-size: 16px;
+    }
+    
+    .payment__bank-name {
+      font-size: 18px;
+    }
+    
+    .payment__bank-info {
+      font-size: 16px;
+    }
+  }
+  

@@ -23,7 +23,7 @@ const Login = () => {
       <div className='auth_box'>
         <h3 className='text-uppercase text-center mb-4'>Login</h3>
 
-        {/* <SocialLogin /> */}
+      
 
          <LoginPass /> 
 
@@ -34,10 +34,7 @@ const Login = () => {
           </Link>
           </span>
          
-          {/* <span className='col-6 text-end' onClick={() => setSms(!sms)}>
-            { sms ? 'Sign in with password' : 'Sign in with SMS'}
-          </span> */}
-
+       
         </small>
         <p className='p3-5'>
           {`You don't have an account?`}

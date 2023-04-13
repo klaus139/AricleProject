@@ -105,6 +105,10 @@ const CreateBlog: React.FC<IProps> = ({id}) =>{
         dispatch(updateBlog(newData, auth.access_token)as unknown as any)
       }else{
         dispatch(createBlog(newData, auth.access_token)as unknown as any)
+        return dispatch({
+          type: ALERT,
+          payload: {success: 'Blog created successfully'}
+        })
       }
     }
   
