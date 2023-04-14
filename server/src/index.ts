@@ -12,6 +12,7 @@ import routes from './routes/index'
 
 import {createServer} from 'http'
 import {Server, Socket} from 'socket.io'
+import path from 'path';
 
 
 //middleware
@@ -31,9 +32,9 @@ io.on("connection", (socket: Socket) => SocketServer(socket))
 
 
 //routes
-app.get('/', (req, res) => {
-    res.json({ msg: 'hello from klaus'})
-})
+app.get('/', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 app.use('/api', routes);
 
 
