@@ -13,7 +13,7 @@ const auth = async (req: IReqAuth, res: Response, next:NextFunction) => {
         if(!decoded) return res.status(400).json({msg: 'Invalid Authentication'})
 
         const user = await User.findOne({_id: decoded.id})
-        if(!user) return res.status(400).json({msg: 'User does not exist'})
+        if(!user) return res.status(400).json({msg: 'User does not exists'})
 
         req.user = user;
 
