@@ -1,0 +1,55 @@
+.card {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    max-width: 300px;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-img-top {
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-title a {
+    color: green;
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+  
+  .card-text {
+    margin-bottom: 1rem;
+  }
+  
+  .text-muted {
+    color: #6c757d;
+  }
+  
+  .card-footer {
+    font-size: 0.875rem;
+    color: #6c757d;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .card-footer-by a {
+    color: green;
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+  

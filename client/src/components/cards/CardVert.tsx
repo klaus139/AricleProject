@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IBlog } from '../../utils/Type';
-
+import './cradvert.css'
 interface IProps {
   blog: IBlog;
 }

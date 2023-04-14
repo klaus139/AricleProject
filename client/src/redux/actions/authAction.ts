@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { useNavigate } from 'react-router-dom';
 import { AUTH,IAuthType } from '../types/authType';
 import {IUserLogin, IUserRegister} from '../../utils/Type';
 import { postAPI, getAPI } from '../../utils/FetchData';
@@ -8,6 +9,7 @@ import { checkTokenExp } from '../../utils/checkTokenExp';
 
 
 export const login = (userLogin:IUserLogin) => async(dispatch:Dispatch<IAuthType | IAlertType>) => {
+  //const navigate = useNavigate()
    try{
     dispatch({type: ALERT, payload: {loading: true}})
     const res:any = await postAPI('login', userLogin)
@@ -18,6 +20,7 @@ export const login = (userLogin:IUserLogin) => async(dispatch:Dispatch<IAuthType
     })
     dispatch({type: ALERT, payload: {success: res.data.msg}})
     localStorage.setItem('logged', 'olean-project')
+    //navigate('/')
 
    }catch(err:any){
     dispatch({ type: ALERT, payload: { errors: err.response.data.msg }})

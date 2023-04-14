@@ -20,6 +20,15 @@ code {
   border-radius: 50%;
 }
 
+.navbar-nav .nav-link {
+  color: green;
+}
+
+.navbar-nav .active .nav-link {
+  color: white;
+  background-color: green;
+}
+
 /* ------Authpage -------------- */
 @import url('./auth.css');
 

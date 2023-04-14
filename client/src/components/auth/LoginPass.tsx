@@ -25,7 +25,7 @@ const LoginPass = () => {
   const handleSubmit = (e: FormSubmit) => {
     e.preventDefault()
     dispatch(login(userLogin)as unknown as any)
-    navigate('/')
+    
 
   }
 
