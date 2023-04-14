@@ -24,7 +24,7 @@ const auth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(400).json({ msg: 'Invalid Authentication' });
         const user = yield userModel_1.default.findOne({ _id: decoded.id });
         if (!user)
-            return res.status(400).json({ msg: 'User does not exist' });
+            return res.status(400).json({ msg: 'User does not exists' });
         req.user = user;
         next();
     }

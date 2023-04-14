@@ -28,9 +28,9 @@ const http = (0, http_1.createServer)(app);
 exports.io = new socket_io_1.Server(http);
 exports.io.on("connection", (socket) => (0, socket_1.SocketServer)(socket));
 //routes
-// app.get('/', (req, res) => {
-//     res.json({ msg: 'hello from klaus'})
-// })
+app.get('/', (req, res) => {
+    res.json({ msg: 'hello from klaus' });
+});
 app.use('/api', index_1.default);
 //connect database
 (0, database_1.default)();

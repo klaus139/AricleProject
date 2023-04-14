@@ -31,9 +31,9 @@ io.on("connection", (socket: Socket) => SocketServer(socket))
 
 
 //routes
-// app.get('/', (req, res) => {
-//     res.json({ msg: 'hello from klaus'})
-// })
+app.get('/', (req, res) => {
+    res.json({ msg: 'hello from klaus'})
+})
 app.use('/api', routes);
 
 
