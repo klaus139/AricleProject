@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "proxy": "https://olean-backend.onrender.com",
+  "proxy": "http://localhost:5000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -33,6 +33,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "dev": "react-scripts start",
     "start": "serve -s build -l $PORT",
     "build": "react-scripts build",
     "test": "react-scripts test",

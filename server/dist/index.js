@@ -16,6 +16,7 @@ const socket_1 = require("./config/socket");
 const index_1 = __importDefault(require("./routes/index"));
 const http_1 = require("http");
 const socket_io_1 = require("socket.io");
+const path_1 = __importDefault(require("path"));
 //middleware
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -28,8 +29,8 @@ const http = (0, http_1.createServer)(app);
 exports.io = new socket_io_1.Server(http);
 exports.io.on("connection", (socket) => (0, socket_1.SocketServer)(socket));
 //routes
-app.get('/', (req, res) => {
-    res.json({ msg: 'hello from klaus' });
+app.get('/', function (req, res) {
+    res.sendFile(path_1.default.join(__dirname, 'build', 'index.html'));
 });
 app.use('/api', index_1.default);
 //connect database

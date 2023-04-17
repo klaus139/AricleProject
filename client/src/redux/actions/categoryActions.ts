@@ -65,7 +65,7 @@ async(dispatch: Dispatch<IAlertType | ICategoryType>) => {
     }, access_token)
 
   } catch (err: any) {
-    dispatch({ type: ALERT, payload: { errors: err.response.data.msg }})
+    dispatch({ type: ALERT, payload: { errors: err.response.data?.msg }})
   }
 }
 

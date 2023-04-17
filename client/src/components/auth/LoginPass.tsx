@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+//import { useNavigate } from 'react-router-dom'
 
 import { InputChange, FormSubmit } from '../../utils/Type'
 import { login } from '../../redux/actions/authAction'
@@ -9,7 +9,7 @@ import { login } from '../../redux/actions/authAction'
 const LoginPass = () => {
   const initialState = { account: '', password: '' }
   const [userLogin, setUserLogin] = useState(initialState)
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
   const { account, password } = userLogin
 
   const [typePass, setTypePass] = useState(false)
