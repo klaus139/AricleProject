@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import path from 'path';
 dotenv.config();
 import dbConnect from './config/database';
 import {SocketServer} from './config/socket'
@@ -12,7 +13,6 @@ import routes from './routes/index'
 
 import {createServer} from 'http'
 import {Server, Socket} from 'socket.io'
-import path from 'path';
 
 
 //middleware
@@ -32,14 +32,22 @@ io.on("connection", (socket: Socket) => SocketServer(socket))
 
 
 //routes
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
+// app.get('/', function (req, res) {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//   });
 app.use('/api', routes);
 
 
 //connect database
 dbConnect();
+
+//production
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'))
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../../client', 'build', 'index.html'))
+    })
+}
 
 
 // server listening

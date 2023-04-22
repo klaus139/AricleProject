@@ -30,16 +30,22 @@ const authCtrl = {
 
             const active_token = generateActiveToken({newUser})
 
-            const url = `${CLIENT_URL}/active/${active_token}`
+            // const url = `${CLIENT_URL}/active/${active_token}`
             
 
+            // if(validateEmail(account)){
+            //     sendEmail(account, url, 'verify your email address')
+            //     return res.json({ msg: "success! please check your email to verify your account" })
+            // } else if(validPhone(account)){
+            //     sendSms(account, url, "Verify your phone number")
+            //     return res.json({ msg: 'Success! Please check your phone'})
+            // }
             if(validateEmail(account)){
-                sendEmail(account, url, 'verify your email address')
-                return res.json({ msg: "success! please check your email to verify your account" })
-            } else if(validPhone(account)){
-                sendSms(account, url, "Verify your phone number")
-                return res.json({ msg: 'Success! Please check your phone'})
-            }
+              const userToSave = new User(newUser)
+              await userToSave.save()
+                return res.json({ msg: "success! please login" })
+            } 
+    
 
             
         } catch(err: any) {
@@ -70,12 +76,10 @@ const authCtrl = {
           await User.create(newUser); // Pass the newUser object to the create() method
   
           if(validateEmail(account)){
-              sendEmail(account, url, 'verify your email address')
-              return res.json({ msg: "success! please check your email to verify your account" })
-          } else if(validPhone(account)){
-              sendSms(account, url, "Verify your phone number")
-              return res.json({ msg: 'Success! Please check your phone'})
-          }
+            const userToSave = new User(newUser)
+            await userToSave.save()
+              return res.json({ msg: "success! please login" })
+          } 
   
           
       } catch(err: any) {

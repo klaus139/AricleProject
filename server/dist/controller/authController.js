@@ -16,9 +16,7 @@ const userModel_1 = __importDefault(require("../models/userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const generateToken_1 = require("../config/generateToken");
-const sendMail_1 = __importDefault(require("../config/sendMail"));
 const valid_1 = require("../middleware/valid");
-const sendSMS_1 = require("../config/sendSMS");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const CLIENT_URL = `${process.env.BASE_URL}`;
@@ -34,14 +32,18 @@ const authCtrl = {
                 name, account, password: passwordHash
             };
             const active_token = (0, generateToken_1.generateActiveToken)({ newUser });
-            const url = `${CLIENT_URL}/active/${active_token}`;
+            // const url = `${CLIENT_URL}/active/${active_token}`
+            // if(validateEmail(account)){
+            //     sendEmail(account, url, 'verify your email address')
+            //     return res.json({ msg: "success! please check your email to verify your account" })
+            // } else if(validPhone(account)){
+            //     sendSms(account, url, "Verify your phone number")
+            //     return res.json({ msg: 'Success! Please check your phone'})
+            // }
             if ((0, valid_1.validateEmail)(account)) {
-                (0, sendMail_1.default)(account, url, 'verify your email address');
-                return res.json({ msg: "success! please check your email to verify your account" });
-            }
-            else if ((0, valid_1.validPhone)(account)) {
-                (0, sendSMS_1.sendSms)(account, url, "Verify your phone number");
-                return res.json({ msg: 'Success! Please check your phone' });
+                const userToSave = new userModel_1.default(newUser);
+                yield userToSave.save();
+                return res.json({ msg: "success! please login" });
             }
         }
         catch (err) {
@@ -65,12 +67,9 @@ const authCtrl = {
             const url = `${CLIENT_URL}/active/${active_token}`;
             yield userModel_1.default.create(newUser); // Pass the newUser object to the create() method
             if ((0, valid_1.validateEmail)(account)) {
-                (0, sendMail_1.default)(account, url, 'verify your email address');
-                return res.json({ msg: "success! please check your email to verify your account" });
-            }
-            else if ((0, valid_1.validPhone)(account)) {
-                (0, sendSMS_1.sendSms)(account, url, "Verify your phone number");
-                return res.json({ msg: 'Success! Please check your phone' });
+                const userToSave = new userModel_1.default(newUser);
+                yield userToSave.save();
+                return res.json({ msg: "success! please login" });
             }
         }
         catch (err) {
