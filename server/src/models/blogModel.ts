@@ -26,6 +26,10 @@ const blogSchema = new mongoose.Schema({
     type: String,
     require: true
   },
+  // pdf:{
+  //   type: String,
+  //   required: true
+  // },
   category: { type: mongoose.Types.ObjectId, ref: 'category' },
 
 }, {

@@ -17,7 +17,7 @@ const CLIENT_URL = `${process.env.BASE_URL}`
 const authCtrl = {
     register: async(req: Request, res: Response) => {
         try{
-            const { name, account, password } = req.body;
+            const { name, account, number, password } = req.body
 
             const user = await User.findOne({account})
             if(user) return res.status(400).json({msg: 'Email or phone number already exist.'})
@@ -25,26 +25,19 @@ const authCtrl = {
             const passwordHash = await bcrypt.hash(password, 12)
 
             const newUser = {
-                name, account, password: passwordHash
+                name, account, number, password: passwordHash
             }
+            console.log(newUser)
 
             const active_token = generateActiveToken({newUser})
 
-            // const url = `${CLIENT_URL}/active/${active_token}`
-            
-
-            // if(validateEmail(account)){
-            //     sendEmail(account, url, 'verify your email address')
-            //     return res.json({ msg: "success! please check your email to verify your account" })
-            // } else if(validPhone(account)){
-            //     sendSms(account, url, "Verify your phone number")
-            //     return res.json({ msg: 'Success! Please check your phone'})
-            // }
+          
             if(validateEmail(account)){
               const userToSave = new User(newUser)
               await userToSave.save()
                 return res.json({ msg: "success! please login" })
             } 
+            console.log(newUser)
     
 
             
@@ -55,7 +48,7 @@ const authCtrl = {
     },
     adminRegister: async(req: Request, res: Response) => {
       try{
-          const { name, account, password } = req.body;
+          const { name, account, number, password } = req.body;
   
           const user = await User.findOne({account})
           if(user) return res.status(400).json({msg: 'Email or phone number already exist.'})
@@ -65,6 +58,7 @@ const authCtrl = {
           const newUser = {
               name, 
               account, 
+              number,
               password: passwordHash,
               role: 'admin' // Add the 'role' property to create an admin user
           }

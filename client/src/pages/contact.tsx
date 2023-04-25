@@ -16,12 +16,12 @@ const Contact = () => {
   const handleSubmit = () => {
     setLoading(true);
 
-    const contact = {
-      _type: 'contact',
-      name,
-      email,
-      message,
-    };
+    // const contact = {
+    //   _type: 'contact',
+    //   name,
+    //   email,
+    //   message,
+    // };
 
     // TODO: Submit the form data to the backend or external service
 

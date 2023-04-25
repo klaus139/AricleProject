@@ -24,6 +24,10 @@ app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
 app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)('dev'));
+app.use((0, cors_1.default)({
+    origin: `${process.env.BASE_URL}`,
+    credentials: true
+}));
 //socket.io
 const http = (0, http_1.createServer)(app);
 exports.io = new socket_io_1.Server(http);

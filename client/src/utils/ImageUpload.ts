@@ -1,3 +1,4 @@
+
 export const checkImage = (file: File) => {
     const types = ['image/png', 'image/jpeg']
     let err = ''
@@ -26,3 +27,20 @@ export const checkImage = (file: File) => {
     const data = await res.json()
     return { public_id: data.public_id, url: data.secure_url };
   }
+
+  // export const uploadPDF = async (pdf:any) => {
+  //   const formData = new FormData()
+  //   formData.append("file", pdf)
+  //   formData.append('upload_preset', 'fdwunv9p' )
+  //   formData.append('cloud_name', 'dt0dhawui' )
+  
+  //   const res = await fetch("https://api.cloudinary.com/v1_1/dt0dhawui/upload", {
+  //     method: "POST",
+  //     body: formData
+  //   })
+  
+  //   const data = await res.json()
+  //   return { public_id: data.public_id, url: data.secure_url };
+   
+  // };
+  

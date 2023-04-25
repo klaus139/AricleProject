@@ -26,13 +26,14 @@ const blogCtrl = {
         if (!req.user)
             return res.status(400).json({ msg: 'Invalid Authentication' });
         try {
-            const { title, content, description, thumbnail, category } = req.body;
+            const { title, content, description, thumbnail, pdf, category } = req.body;
             const newBlog = new blogModel_1.default({
                 user: req.user._id,
                 title: title.toLowerCase(),
                 content,
                 description,
                 thumbnail,
+                pdf,
                 category,
             });
             yield newBlog.save();

@@ -56,6 +56,15 @@ const userCtrl = {
         catch (err) {
             return res.status(500).json({ msg: err.message });
         }
+    }),
+    getAllUsers: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const users = yield userModel_1.default.find().select('-password');
+            res.json(users);
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
     })
 };
 exports.default = userCtrl;

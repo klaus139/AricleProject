@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import {IBlog} from '../../utils/Type';
 import { ALERT, IAlertType } from '../types/alertType';
-import { imageUpload } from '../../utils/ImageUpload';
+import { imageUpload} from '../../utils/ImageUpload';
 import { deleteAPI, getAPI, postAPI, putAPI } from '../../utils/FetchData';
 import { DELETE_BLOGS_USER_ID, GET_BLOGS_CATEGORY_ID, GET_BLOGS_USER_ID, GET_HOME_BLOGS, IDeleteBlogsUserType, IGetBlogsCategoryType, IGetBlogsUserType, IGetHomeBlogsType } from '../types/blogType';
 import { checkTokenExp } from '../../utils/checkTokenExp';
@@ -18,6 +18,14 @@ export const createBlog = (blog: IBlog, token: string) =>
             } else {
                 url = blog.thumbnail
             }
+
+            // if (blog.pdf && typeof(blog.pdf) !== 'string') {
+            //   const file:any = await uploadPDF(blog.pdf);
+            //   url = file.url;
+            // } else {
+            //   url = blog.pdf;
+            // }
+            
             const newBlog = {...blog, thumbnail:url}
             const res = await postAPI('blog', newBlog, token)
             dispatch({ type: ALERT, payload: {success: res.data.msg} })
@@ -28,6 +36,7 @@ export const createBlog = (blog: IBlog, token: string) =>
             dispatch({ type: ALERT, payload: { errors: err.response.data.msg} })
         }
     }
+
 
 export const getHomeBlogs = () => 
     async (dispatch: Dispatch<IAlertType | IGetHomeBlogsType>) => {

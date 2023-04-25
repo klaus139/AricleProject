@@ -8,10 +8,10 @@ import { register } from '../../redux/actions/authAction'
 const RegisterForm = () => {
 
   const initialState = { 
-    name: '', account: '', password: '', cf_password: '' 
+    name: '', account: '', number: '', password: '', cf_password: '' 
   }
   const [userRegister, setUserRegister] = useState(initialState)
-  const { name, account, password, cf_password } = userRegister
+  const { name, account, number, password, cf_password } = userRegister
 
   const [typePass, setTypePass] = useState(false)
   const [typeCfPass, setTypeCfPass] = useState(false)
@@ -42,12 +42,21 @@ const RegisterForm = () => {
 
       <div className="form-group mb-3">
         <label htmlFor="account" className="form-label">
-          Email / Phone number
+          Email 
         </label>
 
         <input type="text" className="form-control" id="account"
         name="account" value={account} onChange={handleChangeInput}
-        placeholder="Example@gmail.com or +23480123456" />
+        placeholder="Example@gmail.com" />
+      </div>
+      <div className="form-group mb-3">
+        <label htmlFor="number" className="form-label">
+          PhoneNumber
+        </label>
+
+        <input type="text" className="form-control" id="number"
+        name="number" value={number} onChange={handleChangeInput}
+        placeholder="+2348011223344" />
       </div>
 
       <div className="form-group mb-3">

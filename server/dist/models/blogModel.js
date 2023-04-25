@@ -29,6 +29,10 @@ const blogSchema = new mongoose_1.default.Schema({
         type: String,
         require: true
     },
+    // pdf:{
+    //   type: String,
+    //   required: true
+    // },
     category: { type: mongoose_1.default.Types.ObjectId, ref: 'category' },
 }, {
     timestamps: true

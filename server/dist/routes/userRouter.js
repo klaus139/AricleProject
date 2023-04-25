@@ -10,4 +10,5 @@ const router = express_1.default.Router();
 router.patch('/user', auth_1.default, userCtrl_1.default.updateUser);
 router.patch('/reset-password', auth_1.default, userCtrl_1.default.resetPassword);
 router.patch('/user/:id', userCtrl_1.default.getUser);
+router.get('/users', userCtrl_1.default.getAllUsers);
 exports.default = router;

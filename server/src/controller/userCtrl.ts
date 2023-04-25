@@ -42,6 +42,14 @@ const userCtrl = {
         }catch(err: any){
             return res.status(500).json({msg: err.message})
         }
+    },
+    getAllUsers: async (req: Request, res: Response) => {
+        try {
+            const users = await User.find().select('-password');
+            res.json(users);
+        } catch (err: any) {
+            return res.status(500).json({msg: err.message});
+        }
     }
 
 }

@@ -1,5 +1,4 @@
 import { Dispatch } from 'redux';
-import { useNavigate } from 'react-router-dom';
 import { AUTH,IAuthType } from '../types/authType';
 import {IUserLogin, IUserRegister} from '../../utils/Type';
 import { postAPI, getAPI } from '../../utils/FetchData';
@@ -60,6 +59,7 @@ async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     dispatch({ type: ALERT, payload: {  } })
   } catch (err: any) {
     dispatch({ type: ALERT, payload: { errors: err.response.data.msg } })
+    localStorage.removeItem('logged')
   }
 }
 

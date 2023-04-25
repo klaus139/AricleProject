@@ -25,6 +25,14 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
       setBlog({...blog, thumbnail: file})
     }
   }
+  // const handleChangePdf = (e: InputChange) => {
+  //   const target = e.target as HTMLInputElement
+  //   const files = target.files
+  //   if(files){
+  //     const file = files[0]
+  //     setBlog({...blog, pdf: file})
+  //   }
+  // }
 
   return (
     <form>
@@ -43,6 +51,10 @@ const CreateForm: React.FC<IProps> = ({blog, setBlog}) => {
         <input type="file" className="form-control"
         accept="image/*" onChange={handleChangeThumbnail} />
       </div>
+      {/* <div className="form-group my-3">
+        <input type="file" className="form-control" placeholder='select pdf'
+        accept="pdf/*" onChange={handleChangePdf} />
+      </div> */}
 
       <div className="form-group position-relative">
         <textarea className="form-control" rows={4}

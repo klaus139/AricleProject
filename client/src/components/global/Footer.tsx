@@ -32,7 +32,7 @@ const Footer = () => {
       </div>
       <div className='footer-legal'>
         <p>© 2023 Olean Project. All Rights Reserved.</p>
-        <p><a href="#" target="_blank" rel='noreferrer'>Privacy Policy</a> | <a href="#" target="_blank" rel='noreferrer'>Terms of Use</a></p>
+       
       </div>
     </div>
   )

@@ -22,7 +22,10 @@ app.use(express.urlencoded({extended: false}));
 app.use(cors());
 app.use(cookieParser());
 app.use(morgan('dev'));
-
+app.use(cors({
+    origin: `${process.env.BASE_URL}`,
+    credentials: true
+}))
 //socket.io
 const http = createServer(app)
 export const io = new Server(http)

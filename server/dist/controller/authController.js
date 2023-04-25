@@ -23,28 +23,22 @@ const CLIENT_URL = `${process.env.BASE_URL}`;
 const authCtrl = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { name, account, password } = req.body;
+            const { name, account, number, password } = req.body;
             const user = yield userModel_1.default.findOne({ account });
             if (user)
                 return res.status(400).json({ msg: 'Email or phone number already exist.' });
             const passwordHash = yield bcrypt_1.default.hash(password, 12);
             const newUser = {
-                name, account, password: passwordHash
+                name, account, number, password: passwordHash
             };
+            console.log(newUser);
             const active_token = (0, generateToken_1.generateActiveToken)({ newUser });
-            // const url = `${CLIENT_URL}/active/${active_token}`
-            // if(validateEmail(account)){
-            //     sendEmail(account, url, 'verify your email address')
-            //     return res.json({ msg: "success! please check your email to verify your account" })
-            // } else if(validPhone(account)){
-            //     sendSms(account, url, "Verify your phone number")
-            //     return res.json({ msg: 'Success! Please check your phone'})
-            // }
             if ((0, valid_1.validateEmail)(account)) {
                 const userToSave = new userModel_1.default(newUser);
                 yield userToSave.save();
                 return res.json({ msg: "success! please login" });
             }
+            console.log(newUser);
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });
@@ -52,7 +46,7 @@ const authCtrl = {
     }),
     adminRegister: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { name, account, password } = req.body;
+            const { name, account, number, password } = req.body;
             const user = yield userModel_1.default.findOne({ account });
             if (user)
                 return res.status(400).json({ msg: 'Email or phone number already exist.' });
@@ -60,6 +54,7 @@ const authCtrl = {
             const newUser = {
                 name,
                 account,
+                number,
                 password: passwordHash,
                 role: 'admin' // Add the 'role' property to create an admin user
             };
