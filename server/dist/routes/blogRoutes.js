@@ -46,12 +46,4 @@ router.route('/blog/:id')
     .put(auth_1.default, blogCtrl_1.default.updateBlog)
     .delete(auth_1.default, blogCtrl_1.default.deleteBlog);
 router.get('/search/blogs', blogCtrl_1.default.searchBlogs);
-// Use the multer middleware to handle image file uploads
-// router.post('/upload', upload.single('pdf'), (req, res) => {
-//   // Send a response indicating the uploaded PDF file was successful
-//   res.json({
-//     success: true,
-//     message: 'PDF uploaded successfully'
-//   });
-// });
 exports.default = router;
