@@ -26,6 +26,14 @@ const blogSchema = new mongoose.Schema({
     type: String,
     require: true
   },
+  type:{
+    type: String,
+    require: true
+  },
+  pages: {
+    type: String,
+    require: true
+  },
   // pdf:{
   //   type: String,
   //   required: true
