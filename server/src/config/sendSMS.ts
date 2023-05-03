@@ -12,7 +12,7 @@ export const sendSms = (to: string, body: string, txt: string) => {
   try {
     client.messages
     .create({
-      body: `BlogDev ${txt} - ${body}`,
+      body: `OleanProject ${txt} - ${body}`,
       from,
       to
     })

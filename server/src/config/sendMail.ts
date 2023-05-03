@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer')
 import jwt from 'jsonwebtoken'
 import { OAuth2Client } from "google-auth-library"
 
-const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground"
+//const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground"
 
 const CLIENT_ID = `${process.env.MAIL_CLIENT_ID}`
 const CLIENT_SECRET = `${process.env.MAIL_CLIENT_SECRET}`

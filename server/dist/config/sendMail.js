@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer = require('nodemailer');
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
+//const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground"
 const CLIENT_ID = `${process.env.MAIL_CLIENT_ID}`;
 const CLIENT_SECRET = `${process.env.MAIL_CLIENT_SECRET}`;
 const REFRESH_TOKEN = `${process.env.MAIL_REFRESH_TOKEN}`;
