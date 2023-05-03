@@ -42,4 +42,6 @@ const userSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.model<IUser>('user', userSchema)
+const User:any = mongoose.model('user', userSchema);
+
+export default User;

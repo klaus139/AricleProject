@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const blogModel_1 = __importDefault(require("../models/blogModel"));
+const commentModel_1 = __importDefault(require("../models/commentModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const Pagination = (req) => {
     let page = Number(req.query.page) * 1 || 1;
@@ -22,24 +23,20 @@ const Pagination = (req) => {
 };
 const blogCtrl = {
     createBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.user, req.body);
         if (!req.user)
-            return res.status(400).json({ msg: 'Invalid Authentication' });
+            return res.status(400).json({ msg: "Invalid Authentication." });
         try {
-            const { title, content, description, type, pages, category } = req.body;
+            const { title, content, description, thumbnail, category } = req.body;
             const newBlog = new blogModel_1.default({
                 user: req.user._id,
                 title: title.toLowerCase(),
                 content,
                 description,
-                type,
-                pages,
-                // thumbnail,
-                // pdf,
-                category,
+                thumbnail,
+                category
             });
             yield newBlog.save();
-            res.json({ newBlog });
+            res.json(Object.assign(Object.assign({}, newBlog._doc), { user: req.user }));
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });
@@ -238,7 +235,7 @@ const blogCtrl = {
             return res.json(blog);
         }
         catch (err) {
-            return res.status(500).json({ msg: "Blog does not exist something went wrong" });
+            return res.status(500).json({ msg: err.message });
         }
     }),
     updateBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -267,7 +264,7 @@ const blogCtrl = {
             if (!blog)
                 return res.status(400).json({ msg: "Invalid Authentication." });
             // Delete Comments
-            //await Comment.deleteMany({ blog_id: blog._id })
+            yield commentModel_1.default.deleteMany({ blog_id: blog._id });
             res.json({ msg: 'Delete Success!' });
         }
         catch (err) {

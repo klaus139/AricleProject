@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/comment', auth, commentCtrl.createComment)
 
-router.get('/comments/blog/:id', commentCtrl.getComments)
+router.get('/comments/project/:id', commentCtrl.getComments)
 
 router.post('/reply_comment', auth, commentCtrl.replyComment)
 

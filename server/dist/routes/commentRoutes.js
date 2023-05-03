@@ -8,7 +8,7 @@ const commentCtrl_1 = __importDefault(require("../controller/commentCtrl"));
 const auth_1 = __importDefault(require("../middleware/auth"));
 const router = express_1.default.Router();
 router.post('/comment', auth_1.default, commentCtrl_1.default.createComment);
-router.get('/comments/blog/:id', commentCtrl_1.default.getComments);
+router.get('/comments/project/:id', commentCtrl_1.default.getComments);
 router.post('/reply_comment', auth_1.default, commentCtrl_1.default.replyComment);
 router.patch('/comment/:id', auth_1.default, commentCtrl_1.default.updateComment);
 router.delete('/comment/:id', auth_1.default, commentCtrl_1.default.deleteComment);

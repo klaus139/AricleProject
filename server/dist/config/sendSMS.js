@@ -9,17 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.smsOTP = exports.sendSms = void 0;
+exports.smsVerify = exports.smsOTP = exports.sendSms = void 0;
 const twilio_1 = require("twilio");
-const accountSID = `${process.env.TWILIO_ACCOUNT_SID}`;
+const accountSid = `${process.env.TWILIO_ACCOUNT_SID}`;
 const authToken = `${process.env.TWILIO_AUTH_TOKEN}`;
 const from = `${process.env.TWILIO_PHONE_NUMBER}`;
-const client = new twilio_1.Twilio(accountSID, authToken);
+const serviceID = `${process.env.TWILIO_SERVICE_ID}`;
+const client = new twilio_1.Twilio(accountSid, authToken);
 const sendSms = (to, body, txt) => {
     try {
         client.messages
             .create({
-            body: `Olean Project ${txt} - ${body}`,
+            body: `BlogDev ${txt} - ${body}`,
             from,
             to
         })
@@ -30,11 +31,37 @@ const sendSms = (to, body, txt) => {
     }
 };
 exports.sendSms = sendSms;
-const smsOTP = (to, channrl) => __awaiter(void 0, void 0, void 0, function* () {
+const smsOTP = (to, channel) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const data = yield client
+            .verify
+            .services(serviceID)
+            .verifications
+            .create({
+            to,
+            channel
+        });
+        return data;
     }
     catch (err) {
         console.log(err);
     }
 });
 exports.smsOTP = smsOTP;
+const smsVerify = (to, code) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield client
+            .verify
+            .services(serviceID)
+            .verificationChecks
+            .create({
+            to,
+            code
+        });
+        return data;
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+exports.smsVerify = smsVerify;
