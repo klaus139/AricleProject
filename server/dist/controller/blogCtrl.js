@@ -26,13 +26,16 @@ const blogCtrl = {
         if (!req.user)
             return res.status(400).json({ msg: "Invalid Authentication." });
         try {
-            const { title, content, description, thumbnail, category } = req.body;
+            const { title, content, methodology, thumbnail, pages, chapter, price, category } = req.body;
             const newBlog = new blogModel_1.default({
                 user: req.user._id,
                 title: title.toLowerCase(),
                 content,
-                description,
+                methodology,
                 thumbnail,
+                pages,
+                price,
+                chapter,
                 category
             });
             yield newBlog.save();
@@ -231,7 +234,7 @@ const blogCtrl = {
             const blog = yield blogModel_1.default.findOne({ _id: req.params.id })
                 .populate("user", "-password");
             if (!blog)
-                return res.status(400).json({ msg: "Blog does not exist." });
+                return res.status(400).json({ msg: "Article does not exist." });
             return res.json(blog);
         }
         catch (err) {
@@ -280,7 +283,7 @@ const blogCtrl = {
                         autocomplete: {
                             "query": `${req.query.title}`,
                             "path": "title"
-                        }
+                        },
                     }
                 },
                 { $sort: { createdAt: -1 } },
@@ -288,14 +291,14 @@ const blogCtrl = {
                 {
                     $project: {
                         title: 1,
-                        description: 1,
-                        thumbnail: 1,
+                        methodology: 1,
+                        // thumbnail: 1,
                         createdAt: 1
                     }
-                }
+                },
             ]);
             if (!blogs.length)
-                return res.status(400).json({ msg: 'No Blogs.' });
+                return res.status(400).json({ msg: 'No Article Found.' });
             res.json(blogs);
         }
         catch (err) {
