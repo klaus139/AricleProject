@@ -12,6 +12,15 @@ export interface IUser extends Document{
   _doc: object
 }
 
+export interface IPayment extends Document {
+  firstname: string
+  lastname: string
+  sex: string
+  email: string
+  phone: string
+  country: string
+}
+
 
 export interface INewUser {
   name: string
