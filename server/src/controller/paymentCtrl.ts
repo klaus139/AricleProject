@@ -5,9 +5,9 @@ import { validateEmail, validPhone } from '../middleware/valid';
 const paymentCtrl = {
     register: async(req: Request, res: Response) => {
         try{
-            const { firstname, lastname, email, phone, sex, country} = req.body;
+            const { name, email, phone, sex, country} = req.body;
 
-            const newPayer = {firstname, lastname, email, phone, sex, country}
+            const newPayer = {name, email, phone, sex, country}
 
             if(validateEmail(email)){
                 const payerToSave = new Payment(newPayer)

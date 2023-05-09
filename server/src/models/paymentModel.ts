@@ -4,14 +4,11 @@ import { IPayment } from '../config/interface'
 
 
 const paymentSchema = new mongoose.Schema({
-    firstname: {
+    name: {
         type: String,
         require: true,
     },
-    lastname: {
-        type: String,
-        require: true
-    },
+   
     sex: {
         type: String,
         require: true

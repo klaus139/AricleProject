@@ -17,8 +17,8 @@ const valid_1 = require("../middleware/valid");
 const paymentCtrl = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { firstname, lastname, email, phone, sex, country } = req.body;
-            const newPayer = { firstname, lastname, email, phone, sex, country };
+            const { name, email, phone, sex, country } = req.body;
+            const newPayer = { name, email, phone, sex, country };
             if ((0, valid_1.validateEmail)(email)) {
                 const payerToSave = new paymentModel_1.default(newPayer);
                 yield payerToSave.save();
