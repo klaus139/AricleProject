@@ -130,7 +130,7 @@ const blogCtrl = {
                             // Sorting
                             { $sort: { createdAt: -1 } },
                             { $skip: skip },
-                            { $limit: limit }
+                            // { $limit: limit }
                         ],
                         totalCount: [
                             {
