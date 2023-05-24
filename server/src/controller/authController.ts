@@ -30,14 +30,20 @@ const authCtrl = {
 
       const url = `${CLIENT_URL}/active/${active_token}`
 
-      if(validateEmail(account)){
-        sendMail(account, url, "Verify your email address")
-        return res.json({ msg: "Success! Please check your email." })
+      // if(validateEmail(account)){
+      //   sendMail(account, url, "Verify your email address")
+      //   return res.json({ msg: "Success! Please check your email." })
 
-      }else if(validPhone(account)){
-        sendSms(account, url, "Verify your phone number")
-        return res.json({ msg: "Success! Please check phone." })
-      }
+      // }else if(validPhone(account)){
+      //   sendSms(account, url, "Verify your phone number")
+      //   return res.json({ msg: "Success! Please check phone." })
+      // }
+      if(validateEmail(account)){
+        const userToSave = new User(newUser)
+        await userToSave.save()
+          return res.json({ msg: "success! please login" })
+      } 
+      console.log(newUser)
 
     } catch (err: any) {
       return res.status(500).json({msg: err.message})
@@ -58,12 +64,12 @@ const authCtrl = {
   //     const active_token = generateActiveToken({newUser})
 
     
-  //     if(validateEmail(account)){
-  //       const userToSave = new User(newUser)
-  //       await userToSave.save()
-  //         return res.json({ msg: "success! please login" })
-  //     } 
-  //     console.log(newUser)
+      // if(validateEmail(account)){
+      //   const userToSave = new User(newUser)
+      //   await userToSave.save()
+      //     return res.json({ msg: "success! please login" })
+      // } 
+      // console.log(newUser)
 
 
       

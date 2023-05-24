@@ -33,14 +33,19 @@ const authCtrl = {
             const newUser = { name, account, number, password: passwordHash };
             const active_token = (0, generateToken_1.generateActiveToken)({ newUser });
             const url = `${CLIENT_URL}/active/${active_token}`;
+            // if(validateEmail(account)){
+            //   sendMail(account, url, "Verify your email address")
+            //   return res.json({ msg: "Success! Please check your email." })
+            // }else if(validPhone(account)){
+            //   sendSms(account, url, "Verify your phone number")
+            //   return res.json({ msg: "Success! Please check phone." })
+            // }
             if ((0, valid_1.validateEmail)(account)) {
-                (0, sendMail_1.default)(account, url, "Verify your email address");
-                return res.json({ msg: "Success! Please check your email." });
+                const userToSave = new userModel_1.default(newUser);
+                yield userToSave.save();
+                return res.json({ msg: "success! please login" });
             }
-            else if ((0, valid_1.validPhone)(account)) {
-                (0, sendSMS_1.sendSms)(account, url, "Verify your phone number");
-                return res.json({ msg: "Success! Please check phone." });
-            }
+            console.log(newUser);
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });
@@ -55,12 +60,12 @@ const authCtrl = {
         //     }
         //     console.log(newUser)
         //     const active_token = generateActiveToken({newUser})
-        //     if(validateEmail(account)){
-        //       const userToSave = new User(newUser)
-        //       await userToSave.save()
-        //         return res.json({ msg: "success! please login" })
-        //     } 
-        //     console.log(newUser)
+        // if(validateEmail(account)){
+        //   const userToSave = new User(newUser)
+        //   await userToSave.save()
+        //     return res.json({ msg: "success! please login" })
+        // } 
+        // console.log(newUser)
         // } catch(err: any) {
         //     return res.status(500).json({msg: err.message})
         // }
