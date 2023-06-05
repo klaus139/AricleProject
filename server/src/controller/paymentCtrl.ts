@@ -7,7 +7,7 @@ const paymentCtrl = {
         try{
             const { name, email, phone, sex, country} = req.body;
 
-            const newPayer = {name, email, phone, sex, country}
+            const newPayer = {name, email, phone}
 
             if(validateEmail(email)){
                 const payerToSave = new Payment(newPayer)
