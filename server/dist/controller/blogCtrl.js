@@ -88,7 +88,7 @@ const blogCtrl = {
                 {
                     $project: {
                         blogs: {
-                            $slice: ['$blogs', 0, 4]
+                            $slice: ['$blogs', 0, 5]
                         },
                         count: 1,
                         name: 1

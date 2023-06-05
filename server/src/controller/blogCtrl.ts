@@ -45,6 +45,7 @@ const blogCtrl = {
   getHomeBlogs: async (req: Request, res: Response) => {
     try {
       const blogs = await Blogs.aggregate([
+      
         // User
         {
           $lookup:{
@@ -85,7 +86,7 @@ const blogCtrl = {
         {
           $project: {
             blogs: {
-              $slice: ['$blogs', 0, 4]
+              $slice: ['$blogs', 0, 5]
             },
             count: 1,
             name: 1
@@ -94,6 +95,7 @@ const blogCtrl = {
       ])
 
       res.json(blogs)
+      
 
     } catch (err: any) {
       return res.status(500).json({msg: err.message})

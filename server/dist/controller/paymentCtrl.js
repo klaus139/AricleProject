@@ -18,7 +18,7 @@ const paymentCtrl = {
     register: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { name, email, phone, sex, country } = req.body;
-            const newPayer = { name, email, phone, sex, country };
+            const newPayer = { name, email, phone };
             if ((0, valid_1.validateEmail)(email)) {
                 const payerToSave = new paymentModel_1.default(newPayer);
                 yield payerToSave.save();

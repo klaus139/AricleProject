@@ -9,10 +9,6 @@ const paymentSchema = new mongoose_1.default.Schema({
         type: String,
         require: true,
     },
-    sex: {
-        type: String,
-        require: true
-    },
     email: {
         type: String,
         require: true
@@ -21,10 +17,6 @@ const paymentSchema = new mongoose_1.default.Schema({
         type: String,
         require: true
     },
-    country: {
-        type: String,
-        require: true
-    }
 }, {
     timestamps: true
 });
