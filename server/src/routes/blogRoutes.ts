@@ -7,14 +7,17 @@ const router = express.Router()
 
 
 router.post('/blog', auth, blogCtrl.createBlog)
+//router.get('/blogs', blogCtrl.getAllBlog)
 
-router.get('/home/blogs', blogCtrl.getHomeBlogs)
+router.get('/home/researchs', blogCtrl.getHomeBlogs)
 
-router.get('/blogs/category/:id', blogCtrl.getBlogsByCategory)
 
-router.get('/blogs/user/:id', blogCtrl.getBlogsByUser)
 
-router.route('/blog/:id')
+router.get('/researchs/category/:id', blogCtrl.getBlogsByCategory)
+
+router.get('/researchs/user/:id', blogCtrl.getBlogsByUser)
+
+router.route('/research/:id')
   .get(blogCtrl.getBlog)
   .put(auth, blogCtrl.updateBlog)
   .delete(auth, blogCtrl.deleteBlog)

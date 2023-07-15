@@ -12,6 +12,23 @@ const Pagination = (req: IReqAuth) => {
 
   return { page, limit, skip };
 }
+// const searchHelper:any = (searchKey:any, query:any, req:any) => {
+
+//   if (req.query.search) {
+
+//       const searchObject:any = {};
+
+//       const regex = new RegExp(req.query.search, "i")
+
+//       searchObject[searchKey] = regex
+
+//       query = query.where(searchObject);
+    
+//       return query
+//   }
+
+//   return query;
+// }
 
 const blogCtrl = {
   createBlog: async (req: IReqAuth, res: Response) => {
@@ -247,6 +264,19 @@ const blogCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
+  // getBlog: async (req: Request, res: Response) => {
+  //   try {
+  //     const blog = await Blogs.findOne({ title: req.params.title })
+  //     .populate("user", "-password")
+
+  //     if(!blog) return res.status(400).json({ msg: "Article does not exist." })
+
+  //     return res.json(blog)
+  //   } catch (err: any) {
+  //     return res.status(500).json({ msg: err.message })
+  //   }
+  // },
+
   updateBlog: async (req: IReqAuth, res: Response) => {
     if(!req.user) 
       return res.status(400).json({msg: "Invalid Authentication."})
