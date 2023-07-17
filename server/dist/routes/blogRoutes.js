@@ -16,6 +16,6 @@ router.get('/researchs/user/:id', blogCtrl_1.default.getBlogsByUser);
 router.route('/research/:id')
     .put(auth_1.default, blogCtrl_1.default.updateBlog)
     .delete(auth_1.default, blogCtrl_1.default.deleteBlog);
-router.route('/research/:slug').get(blogCtrl_1.default.getBlog);
+router.route('/project/:slug').get(blogCtrl_1.default.getBlog);
 router.get('/search/blogs', blogCtrl_1.default.searchBlogs);
 exports.default = router;
