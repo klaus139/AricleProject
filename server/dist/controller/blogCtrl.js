@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const slugify_1 = __importDefault(require("slugify"));
 const blogModel_1 = __importDefault(require("../models/blogModel"));
 const commentModel_1 = __importDefault(require("../models/commentModel"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -21,27 +22,29 @@ const Pagination = (req) => {
     let skip = (page - 1) * limit;
     return { page, limit, skip };
 };
-// const searchHelper:any = (searchKey:any, query:any, req:any) => {
-//   if (req.query.search) {
-//       const searchObject:any = {};
-//       const regex = new RegExp(req.query.search, "i")
-//       searchObject[searchKey] = regex
-//       query = query.where(searchObject);
-//       return query
-//   }
-//   return query;
-// }
+const searchHelper = (searchKey, query, req) => {
+    if (req.query.search) {
+        const searchObject = {};
+        const regex = new RegExp(req.query.search, "i");
+        searchObject[searchKey] = regex;
+        query = query.where(searchObject);
+        return query;
+    }
+    return query;
+};
 const blogCtrl = {
     createBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!req.user)
             return res.status(400).json({ msg: "Invalid Authentication." });
         try {
             const { title, content, methodology, thumbnail, pages, chapter, price, category } = req.body;
+            const slug = (0, slugify_1.default)(title, { lower: true });
             const newBlog = new blogModel_1.default({
                 user: req.user._id,
                 title: title.toLowerCase(),
                 content,
                 methodology,
+                slug,
                 thumbnail,
                 pages,
                 price,
@@ -241,8 +244,9 @@ const blogCtrl = {
     }),
     getBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const blog = yield blogModel_1.default.findOne({ _id: req.params.id })
+            const blog = yield blogModel_1.default.findOne({ slug: req.params.slug })
                 .populate("user", "-password");
+            //console.log(blog)
             if (!blog)
                 return res.status(400).json({ msg: "Article does not exist." });
             return res.json(blog);
@@ -251,16 +255,6 @@ const blogCtrl = {
             return res.status(500).json({ msg: err.message });
         }
     }),
-    // getBlog: async (req: Request, res: Response) => {
-    //   try {
-    //     const blog = await Blogs.findOne({ title: req.params.title })
-    //     .populate("user", "-password")
-    //     if(!blog) return res.status(400).json({ msg: "Article does not exist." })
-    //     return res.json(blog)
-    //   } catch (err: any) {
-    //     return res.status(500).json({ msg: err.message })
-    //   }
-    // },
     updateBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!req.user)
             return res.status(400).json({ msg: "Invalid Authentication." });
@@ -271,6 +265,20 @@ const blogCtrl = {
             if (!blog)
                 return res.status(400).json({ msg: "Invalid Authentication." });
             res.json({ msg: 'Update Success!', blog });
+        }
+        catch (err) {
+            return res.status(500).json({ msg: err.message });
+        }
+    }),
+    updateSlug: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const blogs = yield blogModel_1.default.find();
+            blogs.forEach((blog) => __awaiter(void 0, void 0, void 0, function* () {
+                const newSlug = (0, slugify_1.default)(blog.title, { lower: true });
+                blog.slug = newSlug;
+                yield blog.save();
+            }));
+            res.json({ msg: 'Slugs updated successfully.' });
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });

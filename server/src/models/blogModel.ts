@@ -20,6 +20,9 @@ const blogSchema = new mongoose.Schema({
     trim: true,
     
   },
+  slug:{
+    type:String,
+  },
   thumbnail:{
     type: String,
   

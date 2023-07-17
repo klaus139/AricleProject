@@ -20,6 +20,9 @@ const blogSchema = new mongoose_1.default.Schema({
         require: true,
         trim: true,
     },
+    slug: {
+        type: String,
+    },
     thumbnail: {
         type: String,
     },

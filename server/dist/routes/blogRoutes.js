@@ -8,13 +8,14 @@ const blogCtrl_1 = __importDefault(require("../controller/blogCtrl"));
 const auth_1 = __importDefault(require("../middleware/auth"));
 const router = express_1.default.Router();
 router.post('/blog', auth_1.default, blogCtrl_1.default.createBlog);
+router.post('/slug', blogCtrl_1.default.updateSlug);
 //router.get('/blogs', blogCtrl.getAllBlog)
 router.get('/home/researchs', blogCtrl_1.default.getHomeBlogs);
 router.get('/researchs/category/:id', blogCtrl_1.default.getBlogsByCategory);
 router.get('/researchs/user/:id', blogCtrl_1.default.getBlogsByUser);
 router.route('/research/:id')
-    .get(blogCtrl_1.default.getBlog)
     .put(auth_1.default, blogCtrl_1.default.updateBlog)
     .delete(auth_1.default, blogCtrl_1.default.deleteBlog);
+router.route('/research/:slug').get(blogCtrl_1.default.getBlog);
 router.get('/search/blogs', blogCtrl_1.default.searchBlogs);
 exports.default = router;

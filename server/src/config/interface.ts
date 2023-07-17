@@ -71,6 +71,7 @@ export interface IBlog extends Document{
   user: string
   title: string
   content: string
+  slug: string
   description: string
   thumbnail: string
   category: string

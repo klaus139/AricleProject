@@ -1,8 +1,10 @@
 import { Request, Response } from 'express'
+import slugify from 'slugify'
 import Blogs from '../models/blogModel'
 import Comments from '../models/commentModel'
 import { IReqAuth } from '../config/interface'
 import mongoose from 'mongoose'
+import { JwtPayload } from 'jsonwebtoken'
 
 
 const Pagination = (req: IReqAuth) => {
@@ -12,23 +14,23 @@ const Pagination = (req: IReqAuth) => {
 
   return { page, limit, skip };
 }
-// const searchHelper:any = (searchKey:any, query:any, req:any) => {
+const searchHelper:any = (searchKey:any, query:any, req:any) => {
 
-//   if (req.query.search) {
+  if (req.query.search) {
 
-//       const searchObject:any = {};
+      const searchObject:any = {};
 
-//       const regex = new RegExp(req.query.search, "i")
+      const regex = new RegExp(req.query.search, "i")
 
-//       searchObject[searchKey] = regex
+      searchObject[searchKey] = regex
 
-//       query = query.where(searchObject);
+      query = query.where(searchObject);
     
-//       return query
-//   }
+      return query
+  }
 
-//   return query;
-// }
+  return query;
+}
 
 const blogCtrl = {
   createBlog: async (req: IReqAuth, res: Response) => {
@@ -36,12 +38,14 @@ const blogCtrl = {
 
     try {
       const { title, content, methodology, thumbnail, pages, chapter, price, category } = req.body
+       const slug = slugify(title, { lower: true });
 
       const newBlog = new Blogs({
         user: req.user._id,
         title: title.toLowerCase(), 
         content,
         methodology, 
+        slug,
         thumbnail, 
         pages,
         price,
@@ -254,8 +258,9 @@ const blogCtrl = {
   },
   getBlog: async (req: Request, res: Response) => {
     try {
-      const blog = await Blogs.findOne({_id: req.params.id})
+      const blog = await Blogs.findOne({slug: req.params.slug})
       .populate("user", "-password")
+      //console.log(blog)
 
       if(!blog) return res.status(400).json({ msg: "Article does not exist." })
 
@@ -264,18 +269,7 @@ const blogCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  // getBlog: async (req: Request, res: Response) => {
-  //   try {
-  //     const blog = await Blogs.findOne({ title: req.params.title })
-  //     .populate("user", "-password")
-
-  //     if(!blog) return res.status(400).json({ msg: "Article does not exist." })
-
-  //     return res.json(blog)
-  //   } catch (err: any) {
-  //     return res.status(500).json({ msg: err.message })
-  //   }
-  // },
+ 
 
   updateBlog: async (req: IReqAuth, res: Response) => {
     if(!req.user) 
@@ -294,6 +288,24 @@ const blogCtrl = {
       return res.status(500).json({msg: err.message})
     }
   },
+  updateSlug : async (req: Request, res: Response) => {
+    try {
+      const blogs = await Blogs.find();
+  
+      blogs.forEach(async (blog) => {
+        const newSlug = slugify(blog.title, { lower: true });
+  
+        blog.slug = newSlug;
+        await blog.save();
+      });
+  
+      res.json({ msg: 'Slugs updated successfully.' });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  
+
   deleteBlog: async (req: IReqAuth, res: Response) => {
     if(!req.user) 
       return res.status(400).json({msg: "Invalid Authentication."})
