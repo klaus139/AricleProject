@@ -270,18 +270,56 @@ const blogCtrl = {
             return res.status(500).json({ msg: err.message });
         }
     }),
+    getNonSlug: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const blogs = yield blogModel_1.default.find().exec();
+            const blogsWithoutSlug = blogs.filter((blog) => !blog.slug);
+            res.json(blogsWithoutSlug); // Send the blogs without slug as a JSON response
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).json({ error: "Internal server error" }); // Send an error response if something went wrong
+        }
+    }),
     updateSlug: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        // try {
+        //   const blogs = await Blogs.find();
+        //   blogs.forEach(async (blog) => {
+        //     const newSlug = slugify(blog.title, { lower: true });
+        //     blog.slug = newSlug;
+        //     await blog.save();
+        //   });
+        //   res.json({ msg: 'Slugs updated successfully.' });
+        // } catch (err: any) {
+        //   return res.status(500).json({ msg: err.message });
+        // }
         try {
             const blogs = yield blogModel_1.default.find();
-            blogs.forEach((blog) => __awaiter(void 0, void 0, void 0, function* () {
-                const newSlug = (0, slugify_1.default)(blog.title, { lower: true });
-                blog.slug = newSlug;
-                yield blog.save();
-            }));
-            res.json({ msg: 'Slugs updated successfully.' });
+            for (const blog of blogs) {
+                if (!blog.slug) {
+                    const newSlug = (0, slugify_1.default)(blog.title, { lower: true });
+                    blog.slug = newSlug;
+                    yield blog.save();
+                }
+            }
+            res.json({ msg: "Slugs updated successfully." });
         }
         catch (err) {
             return res.status(500).json({ msg: err.message });
+        }
+    }),
+    getblogo: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { id } = req.params; // Extract the blog ID from the request parameters
+            const blogo = yield blogModel_1.default.findOne({ _id: id });
+            if (!blogo) {
+                return res.status(404).json({ error: "Blog not found" });
+            }
+            res.json(blogo);
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).json({ error: "Internal server error" });
         }
     }),
     deleteBlog: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -320,8 +358,9 @@ const blogCtrl = {
                     $project: {
                         title: 1,
                         methodology: 1,
+                        slug: 1,
                         // thumbnail: 1,
-                        createdAt: 1
+                        createdAt: 1,
                     }
                 },
             ]);

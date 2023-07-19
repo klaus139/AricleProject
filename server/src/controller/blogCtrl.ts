@@ -288,20 +288,61 @@ const blogCtrl = {
       return res.status(500).json({msg: err.message})
     }
   },
+  getNonSlug :async (req: Request, res: Response) => {
+    try {
+      const blogs = await Blogs.find().exec();
+      const blogsWithoutSlug = blogs.filter((blog) => !blog.slug);
+  
+      res.json(blogsWithoutSlug); // Send the blogs without slug as a JSON response
+    } catch (err: any) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" }); // Send an error response if something went wrong
+    }
+  },
   updateSlug : async (req: Request, res: Response) => {
+    // try {
+    //   const blogs = await Blogs.find();
+  
+    //   blogs.forEach(async (blog) => {
+    //     const newSlug = slugify(blog.title, { lower: true });
+  
+    //     blog.slug = newSlug;
+    //     await blog.save();
+    //   });
+  
+    //   res.json({ msg: 'Slugs updated successfully.' });
+    // } catch (err: any) {
+    //   return res.status(500).json({ msg: err.message });
+    // }
     try {
       const blogs = await Blogs.find();
   
-      blogs.forEach(async (blog) => {
-        const newSlug = slugify(blog.title, { lower: true });
+      for (const blog of blogs) {
+        if (!blog.slug) {
+          const newSlug = slugify(blog.title, { lower: true });
+          blog.slug = newSlug;
+          await blog.save();
+        }
+      }
   
-        blog.slug = newSlug;
-        await blog.save();
-      });
-  
-      res.json({ msg: 'Slugs updated successfully.' });
+      res.json({ msg: "Slugs updated successfully." });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
+    }
+  },
+  getblogo:async(req:Request, res: Response) => {
+    try {
+      const { id } = req.params; // Extract the blog ID from the request parameters
+      const blogo = await Blogs.findOne({ _id: id });
+  
+      if (!blogo) {
+        return res.status(404).json({ error: "Blog not found" });
+      }
+  
+      res.json(blogo);
+    } catch (err: any) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
     }
   },
   
@@ -347,8 +388,10 @@ const blogCtrl = {
           $project: {
             title: 1,
             methodology: 1,
+             slug: 1,
             // thumbnail: 1,
-            createdAt: 1
+            createdAt: 1,
+           
           }
         },
         

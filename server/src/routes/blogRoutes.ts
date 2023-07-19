@@ -9,6 +9,9 @@ const router = express.Router()
 router.post('/blog', auth, blogCtrl.createBlog)
 router.post('/slug', blogCtrl.updateSlug)
 //router.get('/blogs', blogCtrl.getAllBlog)
+//router.get('/noslug', blogCtrl.getNonSlug)
+
+//router.get('/blogo/:id', blogCtrl.getblogo)
 
 
 router.get('/home/researchs', blogCtrl.getHomeBlogs)
