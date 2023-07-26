@@ -269,8 +269,6 @@ const blogCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
- 
-
   updateBlog: async (req: IReqAuth, res: Response) => {
     if(!req.user) 
       return res.status(400).json({msg: "Invalid Authentication."})
@@ -288,32 +286,21 @@ const blogCtrl = {
       return res.status(500).json({msg: err.message})
     }
   },
-  getNonSlug :async (req: Request, res: Response) => {
-    try {
-      const blogs = await Blogs.find().exec();
-      const blogsWithoutSlug = blogs.filter((blog) => !blog.slug);
+ 
+ 
+  // getNonSlug :async (req: Request, res: Response) => {
+  //   try {
+  //     const blogs = await Blogs.find().exec();
+  //     const blogsWithoutSlug = blogs.filter((blog) => !blog.slug);
   
-      res.json(blogsWithoutSlug); // Send the blogs without slug as a JSON response
-    } catch (err: any) {
-      console.error(err);
-      res.status(500).json({ error: "Internal server error" }); // Send an error response if something went wrong
-    }
-  },
+  //     res.json(blogsWithoutSlug); // Send the blogs without slug as a JSON response
+  //   } catch (err: any) {
+  //     console.error(err);
+  //     res.status(500).json({ error: "Internal server error" }); // Send an error response if something went wrong
+  //   }
+  // },
   updateSlug : async (req: Request, res: Response) => {
-    // try {
-    //   const blogs = await Blogs.find();
-  
-    //   blogs.forEach(async (blog) => {
-    //     const newSlug = slugify(blog.title, { lower: true });
-  
-    //     blog.slug = newSlug;
-    //     await blog.save();
-    //   });
-  
-    //   res.json({ msg: 'Slugs updated successfully.' });
-    // } catch (err: any) {
-    //   return res.status(500).json({ msg: err.message });
-    // }
+    
     try {
       const blogs = await Blogs.find();
   
@@ -404,6 +391,18 @@ const blogCtrl = {
 
     } catch (err: any) {
       return res.status(500).json({msg: err.message})
+    }
+  },
+  getBlogById: async (req: Request, res: Response) => {
+    try {
+      const blog = await Blogs.findOne({_id: req.params.id})
+      .populate("user", "-password")
+
+      if(!blog) return res.status(400).json({ msg: "Blog does not exist." })
+
+      return res.json(blog)
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message })
     }
   },
 }

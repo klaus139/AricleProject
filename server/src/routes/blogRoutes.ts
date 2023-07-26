@@ -29,6 +29,7 @@ router.route('/research/:id')
   
   .put(auth, blogCtrl.updateBlog)
   .delete(auth, blogCtrl.deleteBlog)
+  .get( blogCtrl.getBlogById)
 router.route('/project/:slug').get(blogCtrl.getBlog)
 
 router.get('/search/blogs', blogCtrl.searchBlogs)
